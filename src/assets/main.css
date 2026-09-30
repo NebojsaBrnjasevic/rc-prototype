@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ──────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── Base resets ───────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    @apply antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  body {
+    @apply bg-surface-light-base text-gray-900 transition-colors duration-250;
+  }
+
+  html.dark body {
+    @apply bg-surface-dark-base text-gray-100;
+  }
+
+  /* Smooth scrollbar in dark mode */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Focus ring — brand cyan */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-brand-400 ring-offset-2;
+  }
+
+  html.dark *:focus-visible {
+    @apply ring-offset-surface-dark-base;
+  }
+}
+
+/* ── Utility classes ───────────────────────────────────────────────────── */
+@layer utilities {
+  /* Overline / label style used in stat cards */
+  .text-overline {
+    @apply text-2xs font-semibold uppercase tracking-widest;
+  }
+
+  /* Card surfaces */
+  .card {
+    @apply bg-surface-light-raised border border-surface-light-border rounded-2xl;
+  }
+  html.dark .card {
+    @apply bg-surface-dark-raised border-surface-dark-border;
+  }
+
+  /* Subtle text — secondary info */
+  .text-subtle {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  /* Brand glow — use sparingly on key CTAs */
+  .glow-brand {
+    @apply shadow-glow-brand;
+  }
+
+  /* Scrollbar styling for dark mode */
+  html.dark ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  html.dark ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    @apply bg-surface-dark-border rounded-full;
+  }
+}
