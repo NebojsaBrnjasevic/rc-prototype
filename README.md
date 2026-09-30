@@ -143,15 +143,10 @@ Defined in `tailwind.config.js`. Key tokens:
 ## GitHub Setup
 
 ```bash
-# If repo doesn't exist yet:
-gh repo create <org>/race-control-vue --private
+# Remote je već podešen na:
+# https://github.com/NebojsaBrnjasevic/msp-prototype
 
-# Push initial scaffold:
-git branch -m main
-git add .
-git commit -m "feat: initial Vue 3 scaffold — design system, routing, stores, layout"
-git remote add origin git@github.com:<org>/race-control-vue.git
+# Push sa terminala:
+cd "Ignition/race-control-vue"
 git push -u origin main
 ```
-
-Replace `<org>` with your GitHub organization or username.

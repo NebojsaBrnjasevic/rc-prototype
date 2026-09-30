@@ -65,6 +65,21 @@ export default {
           DEFAULT: '#EAB308',
           dark: '#854D0E',
         },
+
+        // ── Activity category colors ───────────────────────────────────
+        // Each activity type has a dedicated accent — used for card borders,
+        // bg tints, chart segments, and badges. Keep semantic.
+        sales: {
+          DEFAULT: '#3BB3E5', // cyan — same as brand-400 (Sales = primary CTA feel)
+        },
+        presales: {
+          light: '#EDE9FE',
+          DEFAULT: '#A78BFA', // violet-400 — brighter, visible on dark surfaces
+          dark: '#4C1D95',
+        },
+        marketing: {
+          DEFAULT: '#10B981', // emerald — same as success (Marketing = growth)
+        },
       },
 
       // ── Typography ────────────────────────────────────────────────────

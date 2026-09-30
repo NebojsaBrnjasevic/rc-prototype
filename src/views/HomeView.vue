@@ -3,8 +3,9 @@
     <!-- Page header -->
     <div class="flex items-start justify-between mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-          Welcome back, {{ auth.user?.name?.split(' ')[0] }} 👋
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          Welcome back, {{ auth.user?.name?.split(' ')[0] }}
+          <img src="@/assets/logo.png" alt="" class="w-6 h-6 object-contain" aria-hidden="true" />
         </h1>
         <p class="mt-1 text-sm text-subtle">
           See the activity momentum, follow-up discipline, and recognition shaping your week.
@@ -18,17 +19,18 @@
     <!-- Scope toggle -->
     <div class="flex items-center gap-2 mb-5">
       <button
-        v-for="s in ['my', 'team']"
-        :key="s"
+        v-for="s in scopeOptions"
+        :key="s.key"
         :class="[
-          'px-3 h-8 rounded-lg text-sm font-medium transition-colors capitalize',
-          scope === s
+          'flex items-center gap-1.5 px-3 h-8 rounded-lg text-sm font-medium transition-colors',
+          scope === s.key
             ? 'bg-gray-100 dark:bg-surface-dark-overlay text-gray-900 dark:text-white'
             : 'text-subtle hover:text-gray-700 dark:hover:text-gray-200',
         ]"
-        @click="scope = s"
+        @click="scope = s.key"
       >
-        {{ s === 'my' ? 'My Activity' : 'Team Activity' }}
+        <component :is="s.icon" class="w-4 h-4" />
+        {{ s.label }}
       </button>
     </div>
 
@@ -38,28 +40,12 @@
       <!-- Left: KPI cards + recent activity -->
       <div class="space-y-5">
 
-        <!-- KPI stat cards -->
+        <!-- KPI chart cards -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <StatCard
-            label="Activities"
-            :value="activityStore.stats.total"
-            sublabel="This month"
-          />
-          <StatCard
-            label="Top Activity Type"
-            :value="activityStore.stats.topType ?? '—'"
-            sublabel="By volume"
-          />
-          <StatCard
-            label="Pipeline Generated"
-            :value="activityStore.stats.pipelineInfluenced > 0 ? '£' + activityStore.stats.pipelineInfluenced.toLocaleString() : '£0'"
-            sublabel="This month"
-          />
-          <StatCard
-            label="Total Points"
-            :value="auth.user?.points?.toLocaleString() ?? '0'"
-            sublabel="All time"
-          />
+          <ChartActivities />
+          <ChartActivityType />
+          <ChartPipeline />
+          <ChartPoints />
         </div>
 
         <!-- Recent activity -->
@@ -108,7 +94,7 @@
       </div>
 
       <!-- Right: sidebar widgets -->
-      <div class="space-y-4">
+      <div class="space-y-4 lg:sticky lg:top-[4.5rem] self-start">
 
         <!-- Period Progress -->
         <div class="card p-4">
@@ -179,15 +165,24 @@ import { useActivityStore } from '@/stores/useActivityStore'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
-import StatCard from '@/components/ui/StatCard.vue'
 import AppProgressBar from '@/components/ui/AppProgressBar.vue'
 import AppAvatar from '@/components/ui/AppAvatar.vue'
+import ChartActivities from '@/components/features/dashboard/ChartActivities.vue'
+import ChartActivityType from '@/components/features/dashboard/ChartActivityType.vue'
+import ChartPipeline from '@/components/features/dashboard/ChartPipeline.vue'
+import ChartPoints from '@/components/features/dashboard/ChartPoints.vue'
+import { UserIcon, UsersIcon } from '@heroicons/vue/24/outline'
 
 const auth = useAuthStore()
 const activityStore = useActivityStore()
 
 const scope = ref('my')
 const activityModalOpen = ref(false)
+
+const scopeOptions = [
+  { key: 'my',   label: 'My Activity',   icon: UserIcon },
+  { key: 'team', label: 'Team Activity', icon: UsersIcon },
+]
 
 // TODO: replace with real leaderboard API data
 const leaderboard = [
