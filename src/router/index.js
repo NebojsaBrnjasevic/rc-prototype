@@ -13,7 +13,9 @@ const GuideView      = () => import('@/views/GuideView.vue')
 const AdminView      = () => import('@/views/AdminView.vue')
 const SettingsView   = () => import('@/views/SettingsView.vue')
 const LoginView      = () => import('@/views/LoginView.vue')
-const NotFoundView   = () => import('@/views/NotFoundView.vue')
+const NotFoundView      = () => import('@/views/NotFoundView.vue')
+const DesignSystemView  = () => import('@/views/DesignSystemView.vue')
+const DsComponentView   = () => import('@/views/DsComponentView.vue')
 
 const routes = [
   // ── Public ────────────────────────────────────────────────────────────────
@@ -88,6 +90,18 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: AdminView,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/ds',
+    name: 'design-system',
+    component: DesignSystemView,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/ds/:slug',
+    name: 'design-system-component',
+    component: DsComponentView,
     meta: { requiresAuth: true, requiresAdmin: true },
   },
 
