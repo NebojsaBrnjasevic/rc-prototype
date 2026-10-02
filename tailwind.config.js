@@ -1,4 +1,10 @@
 /** @type {import('tailwindcss').Config} */
+
+// Semantic tokens live as RGB channels in CSS variables (src/assets/main.css),
+// so one class (e.g. `bg-surface-1`) works in both themes and still supports
+// Tailwind opacity modifiers (`bg-brand/10`).
+const v = (name) => `rgb(var(--rc-${name}) / <alpha-value>)`
+
 export default {
   // Dark mode via class — toggle by adding/removing 'dark' on <html>
   darkMode: 'class',
@@ -11,9 +17,24 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ── Semantic (theme-aware) ────────────────────────────────────
+        // Prefer these in new code. Each pairs light + dark via CSS vars.
+        // NOTE: not `base` — that would collide with the text-base font size
+        page: v('page'),                 // page background
+        line: v('border'),               // default borders / dividers
+        fg: {
+          DEFAULT: v('text'),            // primary text
+          2:       v('text-2'),          // secondary text
+          muted:   v('muted'),           // meta, captions
+        },
+
         // ── Brand accent ──────────────────────────────────────────────
-        // Cyan — primary CTAs, active states, key highlights
+        // `brand` / `brand-on` = action color (theme-aware).
+        // Numeric scale kept for existing views.
         brand: {
+          DEFAULT: v('brand'),
+          hover:   v('brand-hover'),
+          on:      v('on-brand'),
           50:  '#ecfeff',
           100: '#cffafe',
           200: '#a5f3fc',
@@ -26,19 +47,11 @@ export default {
           900: '#164e63',
         },
 
-        // ── Surface / background ──────────────────────────────────────
-        // Dark theme surfaces — layered depth, no pure black
+        // ── Surface / background (theme-aware) ────────────────────────
         surface: {
-          // Dark mode
-          'dark-base':  '#071318',  // deepest bg (body)
-          'dark-raised': '#0D1E27', // cards, panels on base
-          'dark-overlay': '#112633',// modals, dropdowns on raised
-          'dark-border': '#1E3A4A', // subtle borders in dark mode
-          // Light mode
-          'light-base':   '#F9FAFB',
-          'light-raised':  '#FFFFFF',
-          'light-overlay': '#F3F4F6',
-          'light-border':  '#E5E7EB',
+          1: v('surface-1'),   // cards, panels
+          2: v('surface-2'),   // controls, rows inside cards
+          3: v('surface-3'),   // hover, active segment, overlays
         },
 
         // ── Semantic status colors ─────────────────────────────────────
@@ -59,37 +72,50 @@ export default {
           dark: '#991B1B',
         },
 
-        // ── Gamification (yellow/gold) — use ONLY for points/rewards ──
+        // ── Gamification (gold) — use ONLY for points / levels / rewards ──
+        // `reward` = gold text/accent, `reward-fill` = gold button/bar fill.
         reward: {
+          DEFAULT: v('reward'),
+          fill:    v('reward-fill'),
+          on:      v('on-reward'),
           light: '#FEF9C3',
-          DEFAULT: '#EAB308',
           dark: '#854D0E',
         },
 
+        // ── Podium — rank 1/2/3 only ───────────────────────────────────
+        podium: {
+          gold:   '#F5B623',
+          silver: '#C3D3DC',
+          bronze: '#D98E5B',
+        },
+
         // ── Activity category colors ───────────────────────────────────
-        // Each activity type has a dedicated accent — used for card borders,
-        // bg tints, chart segments, and badges. Keep semantic.
         sales: {
-          DEFAULT: '#3BB3E5', // cyan — same as brand-400 (Sales = primary CTA feel)
+          DEFAULT: '#3BB3E5',
         },
         presales: {
           light: '#EDE9FE',
-          DEFAULT: '#A78BFA', // violet-400 — brighter, visible on dark surfaces
+          DEFAULT: '#A78BFA',
           dark: '#4C1D95',
         },
         marketing: {
-          DEFAULT: '#10B981', // emerald — same as success (Marketing = growth)
+          DEFAULT: '#10B981',
         },
       },
 
       // ── Typography ────────────────────────────────────────────────────
+      // display: headings + big numbers · sans: UI · mono: timers, IDs
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        display: ['"Unbounded Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans:    ['"Manrope Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono:    ['"JetBrains Mono Variable"', 'ui-monospace', 'monospace'],
       },
 
       fontSize: {
-        '2xs': ['0.625rem', { lineHeight: '0.875rem' }], // 10px
+        '2xs':   ['0.625rem', { lineHeight: '0.875rem' }],                          // 10px — avoid for text
+        label:   ['0.75rem',  { lineHeight: '1rem', letterSpacing: '0.08em', fontWeight: '700' }], // 12px overline
+        'num-lg': ['2.5rem',  { lineHeight: '1', letterSpacing: '-0.02em' }],       // 40px KPI numbers
+        'num-xl': ['3rem',    { lineHeight: '1', letterSpacing: '-0.02em' }],       // 48px hero numbers
       },
 
       // ── Spacing extras ────────────────────────────────────────────────
@@ -105,6 +131,9 @@ export default {
         'xl': '0.75rem',
         '2xl': '1rem',
         '3xl': '1.25rem',
+        control: '0.75rem',  // 12px — buttons, inputs, segments
+        card: '1.25rem',     // 20px — cards
+        panel: '1.5rem',     // 24px — large sections
       },
 
       // ── Backdrop blur ─────────────────────────────────────────────────
@@ -116,7 +145,8 @@ export default {
       boxShadow: {
         'card-dark': '0 1px 3px 0 rgba(0,0,0,0.4), 0 1px 2px -1px rgba(0,0,0,0.4)',
         'card-light': '0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.06)',
-        'glow-brand': '0 0 20px rgba(59,179,229,0.25)',
+        'glow-brand': '0 8px 24px -8px rgb(var(--rc-brand) / 0.6)',
+        'glow-reward': '0 24px 60px -30px rgb(var(--rc-reward-fill) / 0.55)',
       },
 
       // ── Transition ────────────────────────────────────────────────────

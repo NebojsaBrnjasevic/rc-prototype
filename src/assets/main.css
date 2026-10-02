@@ -1,63 +1,117 @@
-/* ── Google Fonts ──────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Fonts are self-hosted via @fontsource-variable (imported in main.js). */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ──────────────────────────────────────────────────────────
+   RGB channels only, consumed by tailwind.config.js as
+   rgb(var(--rc-x) / <alpha-value>). Add a token here AND in the config.   */
+@layer base {
+  :root {
+    /* light */
+    --rc-page:        246 249 251;
+    --rc-surface-1:   255 255 255;
+    --rc-surface-2:   241 245 248;
+    --rc-surface-3:   231 238 243;
+    --rc-border:      219 230 236;
+    --rc-text:          7  19  24;
+    --rc-text-2:       61  86  99;
+    --rc-muted:        92 115 128;
+    --rc-brand:        11 123 168;   /* #0B7BA8 — white text passes 4.5:1 */
+    --rc-brand-hover:   9 104 143;
+    --rc-on-brand:    255 255 255;
+    --rc-reward:      166 108   0;   /* gold for text on light surfaces */
+    --rc-reward-fill: 245 182  35;
+    --rc-on-reward:    31  21   0;
+  }
+
+  html.dark {
+    --rc-page:          6  19  26;   /* #06131A */
+    --rc-surface-1:    11  29  39;   /* #0B1D27 */
+    --rc-surface-2:    16  40  58;   /* #10283A */
+    --rc-surface-3:    22  50  70;   /* #163246 */
+    --rc-border:       28  58  75;   /* #1C3A4B */
+    --rc-text:        234 244 248;   /* #EAF4F8 */
+    --rc-text-2:      163 185 197;   /* #A3B9C5 */
+    --rc-muted:       117 145 160;   /* #7591A0 */
+    --rc-brand:        59 179 229;   /* #3BB3E5 */
+    --rc-brand-hover:  92 200 242;   /* #5CC8F2 */
+    --rc-on-brand:      4  33  46;   /* #04212E */
+    --rc-reward:      245 182  35;   /* #F5B623 */
+    --rc-reward-fill: 245 182  35;
+    --rc-on-reward:    31  21   0;
+  }
+}
+
 /* ── Base resets ───────────────────────────────────────────────────────── */
 @layer base {
   html {
-    @apply antialiased;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    @apply antialiased font-sans;
   }
 
   body {
-    @apply bg-surface-light-base text-gray-900 transition-colors duration-250;
+    @apply bg-page text-fg transition-colors duration-250;
   }
 
-  html.dark body {
-    @apply bg-surface-dark-base text-gray-100;
-  }
-
-  /* Smooth scrollbar in dark mode */
   html.dark {
     color-scheme: dark;
   }
 
-  /* Focus ring — brand cyan */
+  /* Focus ring — brand */
   *:focus-visible {
-    @apply outline-none ring-2 ring-brand-400 ring-offset-2;
-  }
-
-  html.dark *:focus-visible {
-    @apply ring-offset-surface-dark-base;
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-page;
   }
 }
 
 /* ── Utility classes ───────────────────────────────────────────────────── */
 @layer utilities {
-  /* Overline / label style used in stat cards */
+  /* Overline / label — 12px, never smaller */
   .text-overline {
-    @apply text-2xs font-semibold uppercase tracking-widest;
+    @apply text-label uppercase;
   }
 
   /* Card surfaces */
   .card {
-    @apply bg-surface-light-raised border border-surface-light-border rounded-2xl;
-  }
-  html.dark .card {
-    @apply bg-surface-dark-raised border-surface-dark-border;
+    @apply bg-surface-1 border border-line rounded-card;
   }
 
   /* Subtle text — secondary info */
   .text-subtle {
-    @apply text-gray-500 dark:text-gray-400;
+    @apply text-fg-2;
+  }
+
+  /* Numbers that line up in columns */
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 
   /* Brand glow — use sparingly on key CTAs */
   .glow-brand {
     @apply shadow-glow-brand;
+  }
+
+  /* Right-hand side column that stays in view while the page scrolls.
+     Capped to the visible area (topbar 72px + 24px top/bottom) and scrolls on its
+     own if taller, so nothing gets cut off. Use with a breakpoint where the
+     column sits beside the content: lg:sticky-aside or xl:sticky-aside. */
+  .sticky-aside {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--rc-border)) transparent;
+  }
+
+  /* Thin, theme-aware scrollbar for inner scroll areas (sticky asides, panels) */
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--rc-border)) transparent;
   }
 
   /* Scrollbar styling for dark mode */
@@ -68,6 +122,6 @@
     @apply bg-transparent;
   }
   html.dark ::-webkit-scrollbar-thumb {
-    @apply bg-surface-dark-border rounded-full;
+    @apply bg-line rounded-full;
   }
 }

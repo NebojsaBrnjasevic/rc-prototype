@@ -15,7 +15,7 @@ See `../race-control-ux-audit.md` for the full audit findings and design rationa
 | Build | Vite 6 |
 | State | Pinia |
 | Routing | Vue Router 4 |
-| Styling | Tailwind CSS 3 (dark/light via `class` strategy) |
+| Styling | Tailwind CSS 3 (dark/light via `class` strategy, semantic CSS-variable tokens) |
 | Language | JavaScript (no TypeScript) |
 
 ---
@@ -68,11 +68,10 @@ src/
 │           ├── ActivityTrend.vue
 │           └── PartnerBreakdown.vue
 ├── views/
-│   ├── HomeView.vue          # / — dashboard with KPIs, leaderboard, recent activity
+│   ├── MetricsView.vue       # / — Home: race, KPIs, Insights (merged former /dashboards)
 │   ├── ActivityView.vue      # /activity — table/calendar/kanban
 │   ├── DirectoryView.vue     # /directory — vendors/resellers/end users
 │   ├── VendorView.vue        # /directory/vendor/:id — vendor detail
-│   ├── DashboardView.vue     # /dashboards — analytics
 │   ├── ProfileView.vue       # /profile — user stats + gamification
 │   ├── SettingsView.vue      # /settings — preferences + theme toggle (NEW)
 │   ├── ChangelogView.vue     # /changelog
@@ -97,17 +96,24 @@ src/
 
 ## Design System
 
-Defined in `tailwind.config.js`. Key tokens:
+Tokens are RGB channels in CSS variables (`src/assets/main.css`, light + `html.dark`) mapped in `tailwind.config.js`, so one class works in both themes and supports opacity (`bg-brand/10`). Browse everything at `/ds` (admin).
 
-| Token | Value | Use for |
+| Token | Dark value | Use for |
 |---|---|---|
-| `brand-400` | `#3BB3E5` | Primary CTAs, active states, links |
-| `surface-dark-base` | `#071318` | Dark mode body background |
-| `surface-dark-raised` | `#0D1E27` | Cards and panels in dark mode |
-| `success` | `#10B981` | Active status, completed activities |
-| `reward` | `#EAB308` | Points, levels, leaderboard — gamification ONLY |
-| `warning` | `#F59E0B` | Period alerts, failed syncs |
-| `danger` | `#EF4444` | Delete actions, errors |
+| `bg-page` | `#06131A` | Page background |
+| `bg-surface-1/2/3` | `#0B1D27` / `#10283A` / `#163246` | Cards / rows & controls / hover & active |
+| `border-line` | `#1C3A4B` | Borders, dividers |
+| `text-fg` / `text-fg-2` / `text-fg-muted` | `#EAF4F8` / `#A3B9C5` / `#7591A0` | Text hierarchy |
+| `brand` (+ `brand-on`, `brand-hover`) | `#3BB3E5` | Actions, active states, focus, links |
+| `reward` (+ `reward-fill`, `reward-on`) | `#F5B623` | Points, levels, XP, bonuses — **only** |
+| `podium-gold/silver/bronze` | | Rank 1/2/3 only |
+| `success` · `warning` · `danger` | | Status |
+
+All views and components use the semantic tokens — the old `surface-dark-*` / `surface-light-*` pairs were removed.
+
+**Typography** — self-hosted via `@fontsource-variable` (imported in `main.js`): `font-display` Unbounded (titles, big numbers), `font-sans` Manrope (UI, default), `font-mono` JetBrains Mono (countdowns, IDs). Labels use `text-overline` (12px); avoid `text-2xs`.
+
+**Gamification data** — level/XP comes only from `getLevelInfo()` / `auth.levelInfo` (`useAuthStore`). Races, periods and standings come from `useRaceStore` (week/month/quarter/year); the Metrics period switch drives both the race panel and the KPI row.
 
 **Dark/Light mode:** Toggle class on `<html>`. ThemeStore reads/writes `localStorage('rc-theme')` and applies the class immediately on boot to avoid flash.
 
