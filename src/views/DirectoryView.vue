@@ -1,136 +1,175 @@
 <template>
   <AppLayout>
-    <!-- Header -->
     <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Directory</h1>
-      <p class="mt-1 text-sm text-subtle">Partner momentum, in one view.</p>
+      <h1 class="font-display font-bold text-[28px] sm:text-[34px] tracking-tight">Directory</h1>
+      <p class="mt-2 text-base text-fg-2">Vendors, resellers and end users — and how much they're moving.</p>
     </div>
 
-    <!-- Trending hero -->
-    <div class="card p-5 mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <p class="text-overline text-subtle">Trending this week</p>
-          <p class="text-sm text-gray-600 dark:text-gray-300 mt-0.5">
-            Top signal: <span class="font-semibold text-brand-400">SALES · 149</span>
-            <span class="text-subtle"> · Sample: 200 activities</span>
-          </p>
-        </div>
-        <!-- TODO: Tooltip explaining what "signal" means -->
-        <AppTooltip text="Signal = total activities logged against this vendor in the selected period" position="left">
-          <button class="w-6 h-6 rounded-full border border-surface-light-border dark:border-surface-dark-border flex items-center justify-center text-subtle hover:text-gray-600 dark:hover:text-gray-300 text-xs font-semibold">
-            ℹ
-          </button>
-        </AppTooltip>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <RouterLink
-          v-for="v in directoryStore.trendingVendors"
-          :key="v.id"
-          :to="`/directory/vendor/${v.id}`"
-          class="p-4 rounded-xl border border-surface-light-border dark:border-surface-dark-border
-            hover:border-brand-400/40 hover:bg-brand-400/5 transition-all group"
-        >
-          <div class="flex items-center justify-between mb-2">
-            <AppAvatar :name="v.name" size="sm" />
-            <AppBadge color="brand" size="xs">Trending</AppBadge>
-          </div>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-brand-400 transition-colors">{{ v.name }}</p>
-          <p class="text-xs text-subtle mt-0.5">{{ v.activities }} linked activities</p>
-        </RouterLink>
-      </div>
-    </div>
-
-    <!-- Tabs + search -->
-    <div class="flex flex-col sm:flex-row gap-3 mb-4">
-      <div class="flex items-center gap-1 bg-gray-100 dark:bg-surface-dark-overlay p-1 rounded-xl">
-        <button
-          v-for="tab in tabs"
-          :key="tab"
-          :class="[
-            'px-4 h-8 rounded-lg text-sm font-medium transition-colors',
-            activeTab === tab
-              ? 'bg-white dark:bg-surface-dark-raised text-gray-900 dark:text-white shadow-sm'
-              : 'text-subtle hover:text-gray-700 dark:hover:text-gray-200',
-          ]"
-          @click="activeTab = tab"
-        >
-          {{ tab }}
-        </button>
-      </div>
-
-      <!-- Search -->
-      <div class="relative flex-1 max-w-sm">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-        </svg>
-        <input
-          v-model="search"
-          @input="directoryStore.setSearch(search)"
-          type="search"
-          placeholder="Search vendors..."
-          class="w-full h-10 pl-9 pr-4 text-sm rounded-xl border
-            border-surface-light-border bg-white text-gray-900 placeholder-gray-400
-            dark:border-surface-dark-border dark:bg-surface-dark-overlay dark:text-gray-100 dark:placeholder-gray-500
-            focus:outline-none focus:ring-2 focus:ring-brand-400 transition"
-        />
-      </div>
-    </div>
-
-    <!-- Vendor list -->
-    <!--
-      UX FIX: Each row is a RouterLink covering the ENTIRE row (not just the chevron).
-      Original app only had the chevron clickable.
-    -->
-    <div class="space-y-1">
-      <RouterLink
-        v-for="vendor in directoryStore.filteredVendors"
-        :key="vendor.id"
-        :to="`/directory/vendor/${vendor.id}`"
-        class="flex items-center gap-3 px-4 py-3.5 rounded-xl border
-          border-surface-light-border dark:border-surface-dark-border
-          hover:border-brand-400/30 hover:bg-gray-50 dark:hover:bg-surface-dark-overlay
-          transition-all cursor-pointer group"
-      >
-        <AppAvatar :name="vendor.name" size="md" />
-
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-brand-400 transition-colors">
-              {{ vendor.name }}
+    <!-- Momentum -->
+    <section aria-labelledby="momentum-title" class="relative overflow-hidden card p-6 mb-6">
+      <span class="pointer-events-none absolute -right-24 -top-32 w-[380px] h-[380px] rounded-full bg-[radial-gradient(circle,rgb(var(--rc-brand)/0.18),transparent_70%)]" aria-hidden="true" />
+      <div class="relative flex flex-col lg:flex-row lg:items-center gap-6">
+        <div class="flex-1">
+          <h2 id="momentum-title" class="font-display font-semibold text-xl flex items-center gap-2">
+            <SparklesIcon class="w-5 h-5 text-brand" />Partner momentum
+          </h2>
+          <p class="text-sm text-fg-2 mt-1.5">Trending partners are computed from recent activity, so the directory stays fresh.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="h-8 px-3 rounded-full bg-brand/10 border border-brand/30 text-[13px] font-bold flex items-center gap-1.5 text-brand">
+              <ArrowTrendingUpIcon class="w-4 h-4" />Top signal: {{ directory.topSignal.type }} · {{ directory.topSignal.count }}
             </span>
-            <AppBadge v-if="vendor.isTrending" color="brand" size="xs">Trending</AppBadge>
+            <span class="h-8 px-3 rounded-full border border-line text-[13px] font-semibold flex items-center gap-1.5 text-fg-2">
+              <BoltIcon class="w-4 h-4" />Sample: {{ directory.topSignal.sample }} activities
+            </span>
           </div>
-          <p class="text-xs text-subtle mt-0.5">{{ vendor.activities }} activities · Last: {{ vendor.lastActivity }}</p>
         </div>
 
-        <AppBadge color="neutral" size="xs">{{ vendor.type }}</AppBadge>
+        <!-- Trending top 3 for the current tab -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 lg:w-[60%]">
+          <RouterLink
+            v-for="t in trending"
+            :key="t.id"
+            :to="`/directory/${KINDS[kind].route}/${t.id}`"
+            class="rounded-2xl border border-line bg-surface-2 hover:bg-surface-3 hover:border-brand/40 p-4 transition-colors group"
+          >
+            <span class="flex items-center gap-2">
+              <span :class="['w-6 h-6 rounded-md text-xs font-extrabold flex items-center justify-center', t.rank === 1 ? 'bg-podium-gold text-[#1F1500]' : 'bg-surface-3 text-fg-2']">{{ t.rank }}</span>
+              <span class="text-[15px] font-extrabold truncate flex-1">{{ t.name }}</span>
+              <ChevronRightIcon class="w-4 h-4 text-fg-muted group-hover:text-fg" />
+            </span>
+            <span class="block text-[13px] text-fg-muted mt-2">{{ t.links }} {{ t.links === 1 ? 'activity' : 'activities' }}</span>
+            <span class="block h-1 mt-2 rounded-full bg-surface-3 overflow-hidden" aria-hidden="true">
+              <span class="block h-full rounded-full bg-brand" :style="{ width: `${t.share}%` }" />
+            </span>
+          </RouterLink>
+          <p v-if="!trending.length" class="sm:col-span-3 text-sm text-fg-muted">No trending {{ KINDS[kind].label.toLowerCase() }} yet.</p>
+        </div>
+      </div>
+    </section>
 
-        <svg class="w-4 h-4 text-subtle group-hover:text-brand-400 flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      </RouterLink>
+    <!-- Tabs -->
+    <AppViewTabs v-model="kind" :tabs="tabs" aria-label="Company type" id-prefix="dir" class="mb-5" />
 
-      <div v-if="directoryStore.filteredVendors.length === 0" class="py-12 text-center text-subtle text-sm">
-        No results for "{{ search }}"
+    <div :id="`dir-panel-${kind}`" role="tabpanel" :aria-labelledby="`dir-tab-${kind}`">
+      <!-- Search + sort -->
+      <div class="flex flex-col sm:flex-row gap-3 mb-4">
+        <AppInput v-model="q" wrapper-class="flex-1" :placeholder="`Search ${KINDS[kind].label.toLowerCase()}…`" :aria-label="`Search ${KINDS[kind].label.toLowerCase()}`" clearable>
+          <template #leading><MagnifyingGlassIcon class="w-[18px] h-[18px]" /></template>
+        </AppInput>
+        <AppSelect v-model="sort" class="sm:!w-56" :options="sortOptions" aria-label="Sort" />
+      </div>
+
+      <p class="text-[13px] text-fg-muted mb-3 px-1" aria-live="polite">
+        {{ results.length }} {{ results.length === 1 ? 'result' : 'results' }}<template v-if="q"> for “{{ q }}”</template>
+      </p>
+
+      <!-- List -->
+      <ul class="space-y-2">
+        <li v-for="c in visible" :key="c.id">
+          <RouterLink
+            :to="`/directory/${KINDS[kind].route}/${c.id}`"
+            class="flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-line bg-surface-1 hover:bg-surface-2 hover:border-brand/40 transition-colors group"
+          >
+            <span :class="['w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0', KIND_STYLE[kind].soft]">
+              <component :is="KIND_STYLE[kind].icon" class="w-5 h-5" />
+            </span>
+            <span class="flex-1 min-w-0">
+              <span class="flex items-center gap-2 flex-wrap">
+                <span class="text-[15px] font-extrabold truncate">{{ c.name }}</span>
+                <span v-if="c.trendingRank" class="h-5 px-1.5 rounded-md bg-brand/15 text-brand text-[11px] font-extrabold uppercase tracking-[0.04em] flex items-center">Trending</span>
+                <span v-if="c.stats.momentum === 'hot'" class="h-5 px-1.5 rounded-md bg-success/15 text-success text-[11px] font-extrabold uppercase tracking-[0.04em] flex items-center">Hot</span>
+              </span>
+              <span class="block text-[13px] text-fg-muted truncate mt-0.5">{{ subtitle(c) }}</span>
+            </span>
+            <span class="hidden sm:flex flex-col items-end text-right">
+              <span class="text-sm font-extrabold tabular">{{ c.stats.activities }} <span class="font-semibold text-fg-muted">act.</span></span>
+              <span class="text-xs text-fg-muted">{{ c.stats.latest ? relativeDays(c.stats.latest.date) : 'No activity yet' }}</span>
+            </span>
+            <ChevronRightIcon class="w-5 h-5 text-fg-muted group-hover:text-fg flex-shrink-0" />
+          </RouterLink>
+        </li>
+      </ul>
+
+      <AppEmptyState
+        v-if="!results.length"
+        class="card mt-2"
+        :icon="MagnifyingGlassIcon"
+        :title="`No ${KINDS[kind].label.toLowerCase()} found`"
+        description="Check the spelling or try a shorter search."
+      />
+
+      <!-- Show more (production stops at 50 with no way to page) -->
+      <div v-if="visible.length < results.length" class="flex flex-col items-center gap-2 mt-5">
+        <AppButton variant="secondary" @click="limit += PAGE">Show {{ Math.min(PAGE, results.length - visible.length) }} more</AppButton>
+        <p class="text-[13px] text-fg-muted">Showing {{ visible.length }} of {{ results.length }}</p>
       </div>
     </div>
-
   </AppLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useDirectoryStore } from '@/stores/useDirectoryStore'
+import { ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import {
+  SparklesIcon, ArrowTrendingUpIcon, BoltIcon, ChevronRightIcon, MagnifyingGlassIcon,
+} from '@heroicons/vue/24/outline'
+import { useDirectoryStore, KINDS } from '@/stores/useDirectoryStore'
+import { relativeDays, COMPANY_STYLE } from '@/utils/activity'
 import AppLayout from '@/components/layout/AppLayout.vue'
-import AppBadge from '@/components/ui/AppBadge.vue'
-import AppAvatar from '@/components/ui/AppAvatar.vue'
-import AppTooltip from '@/components/ui/AppTooltip.vue'
+import AppViewTabs from '@/components/ui/AppViewTabs.vue'
+import AppInput from '@/components/ui/AppInput.vue'
+import AppSelect from '@/components/ui/AppSelect.vue'
+import AppButton from '@/components/ui/AppButton.vue'
+import AppEmptyState from '@/components/ui/AppEmptyState.vue'
 
-const directoryStore = useDirectoryStore()
-directoryStore.fetchVendors()
+const route = useRoute()
+const router = useRouter()
+const directory = useDirectoryStore()
 
-const tabs = ['Vendors', 'Resellers', 'End Users']
-const activeTab = ref('Vendors')
-const search = ref('')
+const KIND_STYLE = COMPANY_STYLE
+
+const TAB_KEYS = ['vendor', 'reseller', 'endUser']
+const kind = computed({
+  get: () => (TAB_KEYS.includes(route.query.tab) ? route.query.tab : 'vendor'),
+  set: (v) => router.replace({ query: { ...route.query, tab: v === 'vendor' ? undefined : v } }),
+})
+
+const tabs = computed(() => TAB_KEYS.map((k) => ({
+  value: k,
+  label: KINDS[k].label,
+  icon: COMPANY_STYLE[k].icon,
+  count: directory.ofKind(k).length,
+})))
+
+const PAGE = 20
+const q = ref('')
+const sort = ref('name')
+const limit = ref(PAGE)
+watch([kind, q, sort], () => { limit.value = PAGE })
+
+const sortOptions = [
+  { value: 'name', label: 'Sort: Name A–Z' },
+  { value: 'activity', label: 'Sort: Most activity' },
+  { value: 'recent', label: 'Sort: Recently active' },
+]
+
+const trending = computed(() => directory.trending(kind.value))
+const trendingIds = computed(() => Object.fromEntries(trending.value.map((t) => [t.id, t.rank])))
+
+const results = computed(() => {
+  const s = q.value.trim().toLowerCase()
+  const list = directory.ofKind(kind.value)
+    .filter((c) => !s || c.name.toLowerCase().includes(s) || (c.category ?? '').toLowerCase().includes(s))
+    .map((c) => ({ ...c, stats: directory.statsFor(c.id), trendingRank: trendingIds.value[c.id] }))
+  if (sort.value === 'activity') list.sort((a, b) => b.stats.activities - a.stats.activities)
+  if (sort.value === 'recent') list.sort((a, b) => (b.stats.latest?.date ?? '').localeCompare(a.stats.latest?.date ?? ''))
+  return list
+})
+const visible = computed(() => results.value.slice(0, limit.value))
+
+function subtitle(c) {
+  if (c.kind === 'vendor') return c.category
+  if (c.kind === 'reseller') return [c.recordType, c.focusLevel].filter(Boolean).join(' · ')
+  return c.website
+}
 </script>
