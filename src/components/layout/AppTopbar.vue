@@ -1,87 +1,62 @@
 <template>
-  <!--
-    Desktop: single row — Logo | Nav | Actions
-    Mobile:  two rows  — [Logo | Actions] / [Nav]
-  -->
-  <header class="fixed top-0 left-0 right-0 z-40 border-b
-    bg-white/90 backdrop-blur-md border-surface-light-border
-    dark:bg-surface-dark-base/95 dark:border-surface-dark-border">
+  <header class="sticky top-0 z-20 border-b border-line bg-page/90 backdrop-blur-md flex-shrink-0">
 
-    <!-- Row 1: Logo + Actions (always visible) -->
-    <div class="flex items-center h-14 px-4 gap-2">
+    <div class="flex items-center h-[72px] px-4 sm:px-8 gap-2.5">
 
-      <!-- Logo -->
-      <RouterLink to="/" class="flex items-center flex-shrink-0 mr-4 sm:mr-8">
-        <span class="hidden sm:block font-bold tracking-widest uppercase text-sm text-gray-900 dark:text-white whitespace-nowrap">RACE CONTR</span>
-        <img src="@/assets/logo.png" alt="Race Control" class="w-6 h-6 object-contain mx-px" />
-        <span class="hidden sm:block font-bold tracking-widest uppercase text-sm text-gray-900 dark:text-white">L</span>
-      </RouterLink>
-
-      <!-- Desktop nav (hidden on mobile — shown in row 2) -->
-      <nav class="hidden sm:flex items-center gap-1 flex-1">
-        <RouterLink
-          v-for="item in navItems"
-          :key="item.to"
-          :to="item.to"
-          class="nav-link"
-          active-class="nav-link--active"
+      <!-- Mobile hamburger (sidebar is a rail from md up) -->
+      <div class="md:hidden">
+        <button
+          class="icon-btn"
+          @click="uiStore.toggleSidebar()"
+          aria-label="Open navigation"
         >
-          <component :is="item.icon" class="w-4 h-4" />
-          {{ item.label }}
+          <Bars3Icon class="w-5 h-5" />
+        </button>
+      </div>
+
+      <!-- Spacer -->
+      <div class="flex-1" />
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-2.5">
+
+        <!-- Daily bonus — animated until claimed -->
+        <AppRewardBox
+          v-if="auth.isAuthenticated"
+          :available="auth.dailyBonusAvailable"
+          :points="auth.dailyBonusPoints"
+          @claim="auth.claimDailyBonus()"
+        />
+
+        <!-- Weekly race status -->
+        <RouterLink
+          v-if="auth.isAuthenticated && week"
+          to="/race"
+          class="hidden sm:flex items-center gap-2.5 h-11 px-3.5 rounded-control bg-surface-1 border border-line text-sm font-bold hover:bg-surface-2 transition-colors"
+        >
+          <span class="w-2 h-2 rounded-full bg-success ring-4 ring-success/20" aria-hidden="true" />
+          Weekly race
+          <span class="font-mono text-brand">{{ weekLeft }}</span>
         </RouterLink>
-      </nav>
 
-      <!-- Spacer on mobile -->
-      <div class="flex-1 sm:hidden" />
-
-      <!-- Right actions (always visible) -->
-      <div class="flex items-center gap-1">
-
-        <!-- Daily Reward -->
-        <div class="relative" ref="rewardRef" v-if="auth.isAuthenticated">
-          <button
-            class="relative icon-btn"
-            :class="dailyRewardAvailable ? 'text-reward' : ''"
-            @click="onClaimReward"
-            @mouseenter="rewardPopoverOpen = true"
-            @mouseleave="rewardPopoverOpen = false"
-            aria-label="Daily Reward"
-          >
-            <GiftIcon class="w-4 h-4" :class="dailyRewardAvailable ? 'reward-bounce' : ''" />
-            <!-- notification dot -->
-            <span
-              v-if="dailyRewardAvailable"
-              class="absolute top-1 right-1 w-2 h-2 rounded-full bg-danger ring-2 ring-white dark:ring-surface-dark-base"
-            />
-          </button>
-
-          <!-- Popover -->
-          <Transition name="dropdown-fade">
-            <div
-              v-if="rewardPopoverOpen && dailyRewardAvailable"
-              class="absolute right-0 top-full mt-2 w-52 rounded-xl border shadow-xl p-3 pointer-events-none z-50
-                bg-white border-surface-light-border
-                dark:bg-surface-dark-raised dark:border-surface-dark-border"
-            >
-              <!-- Arrow -->
-              <div class="absolute -top-1.5 right-3 w-3 h-3 rotate-45 border-l border-t
-                bg-white border-surface-light-border
-                dark:bg-surface-dark-raised dark:border-surface-dark-border" />
-              <p class="text-xs font-semibold text-gray-900 dark:text-white">Daily Reward Available! 🎁</p>
-              <p class="text-xs text-subtle mt-0.5">Click to claim your points</p>
-            </div>
-          </Transition>
-        </div>
-
-        <!-- Points + Level -->
+        <!-- Points + Level + XP -->
         <RouterLink
           v-if="auth.isAuthenticated"
           to="/profile"
-          class="hidden md:flex items-center gap-1.5 px-3 h-8 rounded-lg text-xs font-semibold text-reward hover:bg-reward/10 transition-colors"
+          class="flex items-center gap-3 h-11 px-3.5 rounded-control bg-surface-1 border border-line hover:bg-surface-2 transition-colors"
+          :aria-label="`${auth.levelInfo.points} points, level ${auth.levelInfo.level}`"
         >
-          <StarIcon class="w-3.5 h-3.5" />
-          <span class="tabular-nums">{{ auth.user?.points?.toLocaleString() ?? 0 }}</span>
-          <span class="text-subtle">· Lv.{{ auth.user?.level ?? 1 }}</span>
+          <span class="w-[22px] h-[22px] rounded-full bg-reward-fill text-reward-on text-[11px] font-extrabold flex items-center justify-center shadow-[inset_0_0_0_3px_#C98A0B]" aria-hidden="true">P</span>
+          <span class="font-display font-bold text-[15px] text-reward tabular">{{ auth.levelInfo.points.toLocaleString() }}</span>
+          <span class="hidden md:block w-px h-5 bg-line" aria-hidden="true" />
+          <span class="hidden md:block text-[13px] font-extrabold">Lv {{ auth.levelInfo.level }}</span>
+          <AppXpBar
+            class="hidden md:flex !w-16"
+            :level="auth.levelInfo.level"
+            :value="auth.levelInfo.pct"
+            :show-labels="false"
+            size="sm"
+          />
         </RouterLink>
 
         <!-- Theme toggle -->
@@ -96,45 +71,32 @@
           </button>
         </AppTooltip>
 
-        <!-- Admin (only for admins) -->
-        <AppTooltip v-if="auth.user?.isAdmin" text="Admin Panel" position="bottom">
-          <RouterLink to="/admin" class="icon-btn" aria-label="Admin Panel">
-            <Cog6ToothIcon class="w-4 h-4" />
-          </RouterLink>
-        </AppTooltip>
-
-        <!-- Guide -->
-        <AppTooltip text="How-To Guide" position="bottom">
-          <RouterLink to="/guide" class="icon-btn" aria-label="How-To Guide">
-            <BookOpenIcon class="w-4 h-4" />
-          </RouterLink>
-        </AppTooltip>
-
         <!-- User menu -->
         <div class="relative" ref="menuRef">
           <button
-            class="flex items-center gap-1.5 pl-1.5 pr-1 h-9 rounded-xl hover:bg-gray-100 dark:hover:bg-surface-dark-overlay transition-colors"
+            class="flex items-center gap-2 pl-1.5 pr-2 h-11 rounded-control hover:bg-surface-2 transition-colors"
             @click="menuOpen = !menuOpen"
             aria-haspopup="true"
             :aria-expanded="menuOpen"
           >
             <AppAvatar :name="auth.user?.name ?? ''" size="sm" />
-            <span class="hidden md:block text-xs font-medium text-gray-700 dark:text-gray-200 max-w-[100px] truncate">
-              {{ auth.user?.name ?? 'User' }}
+            <span class="hidden lg:flex flex-col items-start text-left leading-tight max-w-[140px]">
+              <span class="text-sm font-bold truncate max-w-full">{{ auth.user?.name ?? 'User' }}</span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.1em] text-fg-muted mt-0.5">
+                {{ auth.user?.isAdmin ? 'Admin' : 'Member' }}
+              </span>
             </span>
-            <ChevronDownIcon class="w-3.5 h-3.5 text-gray-400 transition-transform" :class="menuOpen ? 'rotate-180' : ''" />
+            <ChevronDownIcon class="w-4 h-4 text-fg-muted transition-transform" :class="menuOpen ? 'rotate-180' : ''" />
           </button>
 
           <Transition name="dropdown-fade">
             <div
               v-if="menuOpen"
-              class="absolute right-0 top-full mt-1 w-52 rounded-xl border shadow-lg overflow-hidden
-                bg-white border-surface-light-border
-                dark:bg-surface-dark-raised dark:border-surface-dark-border"
+              class="absolute right-0 top-full mt-1 w-56 rounded-xl border border-line bg-surface-1 shadow-lg overflow-hidden"
             >
-              <div class="px-3 py-2.5 border-b border-surface-light-border dark:border-surface-dark-border">
-                <p class="text-xs font-semibold text-gray-900 dark:text-white truncate">{{ auth.user?.name }}</p>
-                <p class="text-xs text-subtle truncate">{{ auth.user?.email }}</p>
+              <div class="px-4 py-3 border-b border-line">
+                <p class="text-sm font-bold truncate">{{ auth.user?.name }}</p>
+                <p class="text-[13px] text-fg-muted truncate">{{ auth.user?.email }}</p>
               </div>
               <div class="py-1">
                 <RouterLink to="/profile"   class="dropdown-item" @click="menuOpen = false"><UserIcon class="w-4 h-4" /> My Profile</RouterLink>
@@ -142,7 +104,7 @@
                 <RouterLink to="/changelog" class="dropdown-item" @click="menuOpen = false"><ClipboardDocumentListIcon class="w-4 h-4" /> Changelog</RouterLink>
                 <RouterLink v-if="auth.user?.isAdmin" to="/admin" class="dropdown-item" @click="menuOpen = false"><ShieldCheckIcon class="w-4 h-4" /> Admin Panel</RouterLink>
               </div>
-              <div class="py-1 border-t border-surface-light-border dark:border-surface-dark-border">
+              <div class="py-1 border-t border-line">
                 <button class="dropdown-item w-full text-danger" @click="onSignOut">
                   <ArrowRightOnRectangleIcon class="w-4 h-4" /> Sign out
                 </button>
@@ -153,74 +115,50 @@
       </div>
     </div>
 
-    <!-- Row 2: Mobile nav (hidden on sm+) -->
-    <nav class="flex sm:hidden items-center gap-1 px-3 pb-2 overflow-x-auto">
-      <RouterLink
-        v-for="item in navItems"
-        :key="item.to"
-        :to="item.to"
-        class="nav-link flex-shrink-0"
-        active-class="nav-link--active"
-      >
-        <component :is="item.icon" class="w-4 h-4" />
-        {{ item.label }}
-      </RouterLink>
-    </nav>
-
   </header>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useThemeStore } from '@/stores/useThemeStore'
+import { useUiStore } from '@/stores/useUiStore'
+import { useRaceStore } from '@/stores/useRaceStore'
+import AppXpBar from '@/components/ui/AppXpBar.vue'
+import AppRewardBox from '@/components/ui/AppRewardBox.vue'
 import AppAvatar from '@/components/ui/AppAvatar.vue'
 import AppTooltip from '@/components/ui/AppTooltip.vue'
 import {
-  HomeIcon,
-  BoltIcon,
-  BuildingOffice2Icon,
-  ChartBarIcon,
+  Bars3Icon,
   SunIcon,
   MoonIcon,
   Cog6ToothIcon,
-  BookOpenIcon,
-  StarIcon,
   UserIcon,
   ArrowRightOnRectangleIcon,
   ShieldCheckIcon,
   ClipboardDocumentListIcon,
   ChevronDownIcon,
-  GiftIcon,
 } from '@heroicons/vue/24/outline'
 
 const auth = useAuthStore()
 const themeStore = useThemeStore()
+const uiStore = useUiStore()
 const router = useRouter()
+
+const race = useRaceStore()
 
 const menuOpen = ref(false)
 const menuRef = ref(null)
-const rewardRef = ref(null)
-const rewardPopoverOpen = ref(false)
 
-// TODO: drive from API — true when user hasn't claimed today's reward
-const dailyRewardAvailable = ref(true)
-
-function onClaimReward() {
-  if (!dailyRewardAvailable.value) return
-  rewardPopoverOpen.value = false
-  // TODO: call real reward API
-  auth.addPoints(50)
-  dailyRewardAvailable.value = false
-}
-
-const navItems = [
-  { to: '/',           label: 'Home',      icon: HomeIcon },
-  { to: '/activity',   label: 'Activity',  icon: BoltIcon },
-  { to: '/directory',  label: 'Directory', icon: BuildingOffice2Icon },
-  { to: '/dashboards', label: 'Dashboard', icon: ChartBarIcon },
-]
+// Weekly race countdown — "3d 14h"
+const week = computed(() => race.periods.find((p) => p.key === 'week'))
+const weekLeft = computed(() => {
+  const ms = Math.max(0, week.value.end - race.now)
+  const d = Math.floor(ms / 86_400_000)
+  const h = Math.floor((ms % 86_400_000) / 3_600_000)
+  return `${String(d).padStart(2, '0')}d ${String(h).padStart(2, '0')}h`
+})
 
 function onSignOut() {
   menuOpen.value = false
@@ -238,26 +176,15 @@ onUnmounted(() => document.removeEventListener('mousedown', onClickOutside))
 </script>
 
 <style scoped>
-.nav-link {
-  @apply px-4 h-9 flex items-center gap-2 text-sm font-medium rounded-lg
-    text-gray-600 dark:text-gray-400
-    hover:text-gray-900 dark:hover:text-white
-    hover:bg-gray-100 dark:hover:bg-surface-dark-overlay
-    transition-colors;
-}
-.nav-link--active {
-  @apply text-brand-400 bg-brand-400/10 ring-1 ring-brand-400/50;
-}
 .icon-btn {
-  @apply w-8 h-8 flex items-center justify-center rounded-lg
-    text-gray-500 dark:text-gray-400
-    hover:bg-gray-100 dark:hover:bg-surface-dark-overlay
-    hover:text-gray-700 dark:hover:text-gray-200
+  @apply w-11 h-11 flex items-center justify-center rounded-control
+    text-fg-2 bg-surface-1 border border-line
+    hover:bg-surface-2 hover:text-fg
     transition-colors;
 }
 .dropdown-item {
-  @apply flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300
-    hover:bg-gray-50 dark:hover:bg-surface-dark-overlay transition-colors cursor-pointer;
+  @apply flex items-center gap-3 w-full px-4 py-2.5 text-sm font-semibold text-fg-2
+    hover:bg-surface-2 hover:text-fg transition-colors cursor-pointer;
 }
 .dropdown-fade-enter-active,
 .dropdown-fade-leave-active {
@@ -267,19 +194,5 @@ onUnmounted(() => document.removeEventListener('mousedown', onClickOutside))
 .dropdown-fade-leave-to {
   opacity: 0;
   transform: translateY(-4px);
-}
-
-/* Daily reward bounce animation */
-.reward-bounce {
-  animation: reward-bounce 1.4s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-@keyframes reward-bounce {
-  0%, 100% { transform: translateY(0)  rotate(0deg);   }
-  15%       { transform: translateY(-5px) rotate(-8deg); }
-  30%       { transform: translateY(0)  rotate(6deg);   }
-  45%       { transform: translateY(-3px) rotate(-4deg); }
-  60%       { transform: translateY(0)  rotate(2deg);   }
-  75%       { transform: translateY(-1px) rotate(0deg); }
 }
 </style>
