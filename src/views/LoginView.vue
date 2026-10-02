@@ -2,10 +2,11 @@
   <div class="min-h-screen bg-page grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
     <!-- Brand side -->
     <section class="relative overflow-hidden hidden lg:flex flex-col justify-between p-12 xl:p-16 border-r border-line bg-surface-1">
-      <!-- Light streaks echo the production login, built from tokens -->
+      <!-- Gradient mesh, same language as the Home hero -->
       <span class="pointer-events-none absolute -right-40 top-1/3 w-[620px] h-[620px] rounded-full border-[18px] border-brand/10 blur-[2px]" aria-hidden="true" />
       <span class="pointer-events-none absolute -right-24 top-[45%] w-[520px] h-[520px] rounded-full border-[10px] border-presales/15 blur-[1px]" aria-hidden="true" />
-      <span class="pointer-events-none absolute -left-32 -bottom-40 w-[560px] h-[560px] rounded-full bg-[radial-gradient(circle,rgb(var(--rc-brand)/0.16),transparent_70%)]" aria-hidden="true" />
+      <span class="pointer-events-none absolute -left-32 -bottom-40 w-[560px] h-[560px] rounded-full bg-[radial-gradient(circle,rgb(var(--rc-brand)/0.22),transparent_70%)]" aria-hidden="true" />
+      <span class="pointer-events-none absolute -right-20 -top-24 w-[480px] h-[480px] rounded-full bg-[radial-gradient(circle,rgb(var(--rc-presales)/0.18),transparent_70%)]" aria-hidden="true" />
 
       <div class="relative">
         <div class="flex items-center gap-3">

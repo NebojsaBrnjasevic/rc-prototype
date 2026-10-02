@@ -38,10 +38,13 @@
       </div>
     </div>
 
-    <!-- 1 · Race -->
-    <RacePanel class="mb-6" :show-period-tabs="false" @log="ui.openActivityModal()" />
+    <!-- 1 · You in the race (the one emphasised card) -->
+    <RaceHero class="mb-6" @log="ui.openActivityModal()" />
 
-    <!-- 2 · KPIs (scope + period, compared with the previous period) -->
+    <!-- 2 · Race -->
+    <RacePanel class="mb-6" :show-period-tabs="false" :show-you="false" @log="ui.openActivityModal()" />
+
+    <!-- 3 · KPIs (scope + period, compared with the previous period) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
       <StatCard
         label="Activities"
@@ -87,7 +90,7 @@
       />
     </div>
 
-    <!-- 3 · Insights -->
+    <!-- 4 · Insights -->
     <section id="insights" aria-labelledby="insights-title" class="scroll-mt-28 space-y-5 mb-10">
       <div class="flex items-end justify-between gap-4">
         <div>
@@ -110,7 +113,7 @@
       />
     </section>
 
-    <!-- 4 · Recent activity -->
+    <!-- 5 · Recent activity -->
     <section class="card p-6" aria-labelledby="recent-title">
       <template v-if="insights.recent.length">
         <div class="flex items-center justify-between mb-4">
@@ -181,6 +184,7 @@ import AppPeriodTabs from '@/components/ui/AppPeriodTabs.vue'
 import AppXpBar from '@/components/ui/AppXpBar.vue'
 import StatCard from '@/components/ui/StatCard.vue'
 import RacePanel from '@/components/features/race/RacePanel.vue'
+import RaceHero from '@/components/features/race/RaceHero.vue'
 import InsightsTrend from '@/components/features/insights/InsightsTrend.vue'
 import InsightsBreakdown from '@/components/features/insights/InsightsBreakdown.vue'
 import InsightsPartners from '@/components/features/insights/InsightsPartners.vue'

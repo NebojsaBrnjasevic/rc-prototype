@@ -45,7 +45,7 @@
         </div>
 
         <RaceYouRow
-          v-if="!race.me || race.me.rank > 1"
+          v-if="showYou && (!race.me || race.me.rank > 1)"
           class="mt-auto"
           :me="race.me"
           :target="race.nextTarget"
@@ -72,6 +72,8 @@ import RaceYouRow from './RaceYouRow.vue'
 defineProps({
   /** Hide when the page already has a global period switch (Home) */
   showPeriodTabs: { type: Boolean, default: true },
+  /** Hide the "You" row when the page already shows RaceHero */
+  showYou:        { type: Boolean, default: true },
 })
 defineEmits(['log'])
 
