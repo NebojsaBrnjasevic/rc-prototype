@@ -150,7 +150,7 @@ All views and components use the semantic tokens — the old `surface-dark-*` / 
 
 ```bash
 # Remote je već podešen na:
-# https://github.com/NebojsaBrnjasevic/msp-prototype
+# https://github.com/NebojsaBrnjasevic/rc-prototype
 
 # Push sa terminala:
 cd race-control-vue
