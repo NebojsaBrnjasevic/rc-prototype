@@ -156,3 +156,14 @@ All views and components use the semantic tokens — the old `surface-dark-*` / 
 cd "Ignition/race-control-vue"
 git push -u origin main
 ```
+
+---
+
+## Deploy (GitHub Pages)
+
+`.github/workflows/deploy-pages.yml` builds and publishes on every push to `main` (or manually via **Actions › Deploy to GitHub Pages › Run workflow**).
+
+- One-time setup: **Settings › Pages › Source: GitHub Actions**
+- URL: `https://<user>.github.io/<repo>/` — the workflow passes the repo name as `BASE_PATH`
+- `npm run build:pages` also copies `index.html` to `404.html`, so deep links and refreshes on routes like `/activity` work
+- Local `npm run dev` / `npm run build` are unchanged (base `/`)
