@@ -5,7 +5,7 @@
       role="tooltip"
       :class="[
         'absolute z-50 px-2 py-1 text-xs font-medium rounded-lg whitespace-nowrap pointer-events-none',
-        'bg-gray-900 text-white dark:bg-gray-700',
+        'bg-surface-3 text-fg border border-line shadow-lg',
         'opacity-0 group-hover:opacity-100 transition-opacity duration-150',
         positionClass,
       ]"

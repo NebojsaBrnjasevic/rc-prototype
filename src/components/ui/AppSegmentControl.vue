@@ -1,16 +1,24 @@
 <template>
-  <div class="inline-flex rounded-full bg-gray-100 dark:bg-surface-dark-overlay p-0.5 gap-0.5">
+  <div
+    role="tablist"
+    :aria-label="ariaLabel"
+    :class="['inline-flex rounded-control bg-surface-1 border border-line p-1 gap-1', size === 'sm' ? 'h-9' : 'h-11']"
+  >
     <button
       v-for="opt in options"
       :key="opt.value"
       type="button"
-      class="rounded-full px-4 py-1.5 text-sm cursor-pointer transition-all"
+      role="tab"
+      :aria-selected="modelValue === opt.value"
+      class="rounded-[9px] px-3.5 text-sm font-bold cursor-pointer transition-colors flex items-center gap-1.5"
       :class="modelValue === opt.value
-        ? 'bg-white dark:bg-surface-dark-base shadow-sm text-gray-900 dark:text-white font-medium'
-        : 'text-subtle hover:text-gray-700 dark:hover:text-gray-300'"
+        ? 'bg-surface-3 text-fg'
+        : 'text-fg-2 hover:text-fg'"
       @click="$emit('update:modelValue', opt.value)"
     >
-      <span v-if="opt.icon" class="mr-1">{{ opt.icon }}</span>{{ opt.label }}
+      <component v-if="opt.icon && typeof opt.icon !== 'string'" :is="opt.icon" class="w-4 h-4" />
+      <span v-else-if="opt.icon">{{ opt.icon }}</span>
+      {{ opt.label }}
     </button>
   </div>
 </template>
@@ -18,8 +26,11 @@
 <script setup>
 defineProps({
   modelValue: { required: true },
+  /** [{ value, label, icon? }] — icon can be a component or a string */
   options:    { type: Array, required: true },
+  /** 'sm' (36px) | 'md' (44px) */
   size:       { type: String, default: 'md' },
+  ariaLabel:  { type: String, default: null },
 })
 defineEmits(['update:modelValue'])
 </script>

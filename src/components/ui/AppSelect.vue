@@ -5,14 +5,14 @@
       :value="modelValue"
       :disabled="disabled"
       :class="[
-        'w-full appearance-none rounded-xl border bg-white dark:bg-surface-dark-overlay',
-        'text-gray-900 dark:text-white text-sm pr-8 outline-none cursor-pointer',
+        'w-full appearance-none rounded-control border bg-surface-2',
+        'text-fg text-sm font-semibold pr-9 outline-none cursor-pointer',
         'transition-all duration-150',
-        'focus:ring-2 focus:ring-brand-400 focus:border-brand-400',
+        'focus:ring-2 focus:ring-brand focus:border-brand',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         error
           ? 'border-danger focus:ring-danger'
-          : 'border-gray-200 dark:border-surface-dark-border',
+          : 'border-line',
         sizeMap[size],
       ]"
       @change="$emit('update:modelValue', $event.target.value)"
@@ -53,7 +53,7 @@ defineEmits(['update:modelValue'])
 
 const sizeMap = {
   sm: 'h-8 pl-3 text-xs',
-  md: 'h-10 pl-3 text-sm',
+  md: 'h-11 pl-3 text-sm',
   lg: 'h-12 pl-4 text-base',
 }
 

@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 const sizeClass = computed(() => ({
-  xs: 'w-6 h-6 text-2xs',
+  xs: 'w-6 h-6 text-[10px]',
   sm: 'w-8 h-8 text-xs',
   md: 'w-9 h-9 text-sm',
   lg: 'w-11 h-11 text-base',
@@ -24,7 +24,7 @@ const sizeClass = computed(() => ({
 
 // Deterministic color from name — avoids flicker on re-render
 const palette = [
-  'bg-brand-400/20 text-brand-600 dark:text-brand-300',
+  'bg-brand/20 text-brand',
   'bg-violet-500/20 text-violet-700 dark:text-violet-300',
   'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300',
   'bg-amber-500/20 text-amber-700 dark:text-amber-300',

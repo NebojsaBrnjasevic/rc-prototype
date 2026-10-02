@@ -5,10 +5,10 @@
     :aria-checked="modelValue"
     :disabled="disabled"
     :class="[
-      'relative flex-shrink-0 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-surface-dark-base',
+      'relative flex-shrink-0 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page',
       'disabled:opacity-50 disabled:cursor-not-allowed',
       sizeMap[size].track,
-      modelValue ? activeColor : 'bg-gray-200 dark:bg-surface-dark-border',
+      modelValue ? activeColor : 'bg-surface-3 border border-line',
     ]"
     @click="!disabled && $emit('update:modelValue', !modelValue)"
   >
@@ -28,7 +28,7 @@ const props = defineProps({
   size:       { type: String,  default: 'md' }, // 'sm' | 'md' | 'lg'
   disabled:   { type: Boolean, default: false },
   /** Tailwind bg class when active — defaults to brand cyan */
-  activeColor: { type: String, default: 'bg-brand-400' },
+  activeColor: { type: String, default: 'bg-brand' },
 })
 
 defineEmits(['update:modelValue'])

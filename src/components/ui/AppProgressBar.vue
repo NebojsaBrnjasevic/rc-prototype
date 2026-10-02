@@ -1,8 +1,8 @@
 <template>
   <div class="w-full">
     <div v-if="label || showValue" class="flex items-center justify-between mb-1.5">
-      <span v-if="label" class="text-xs text-subtle">{{ label }}</span>
-      <span v-if="showValue" class="text-xs font-medium text-gray-700 dark:text-gray-300 tabular-nums">
+      <span v-if="label" class="text-[13px] font-semibold text-fg-2">{{ label }}</span>
+      <span v-if="showValue" class="text-[13px] font-bold text-fg tabular-nums">
         {{ Math.round(clampedValue) }}%
       </span>
     </div>
@@ -41,12 +41,12 @@ const trackClass = computed(() => ({
   sm: 'h-1',
   md: 'h-2',
   lg: 'h-3',
-}[props.size] + ' bg-gray-200 dark:bg-surface-dark-overlay'))
+}[props.size] + ' bg-surface-3'))
 
 const fillClass = computed(() => ({
-  brand: 'bg-brand-400',
+  brand: 'bg-brand',
   success: 'bg-success',
   warning: 'bg-warning',
-  reward: 'bg-reward',
-}[props.color] ?? 'bg-brand-400'))
+  reward: 'bg-reward-fill',
+}[props.color] ?? 'bg-brand'))
 </script>

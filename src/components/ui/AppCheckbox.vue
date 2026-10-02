@@ -5,7 +5,7 @@
     <span class="relative flex-shrink-0 mt-0.5">
       <input
         type="checkbox"
-        class="sr-only"
+        class="sr-only peer"
         :checked="modelValue"
         :disabled="disabled"
         :indeterminate="indeterminate"
@@ -13,25 +13,25 @@
       />
       <span
         :class="[
-          'flex items-center justify-center rounded border-2 transition-all duration-150',
+          'flex items-center justify-center rounded-md border-2 transition-all duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-brand peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-page',
           sizeMap[size],
           modelValue || indeterminate
-            ? 'bg-brand-400 border-brand-400'
-            : 'bg-white dark:bg-surface-dark-overlay border-gray-300 dark:border-surface-dark-border group-hover:border-brand-400',
+            ? 'bg-brand border-brand text-brand-on'
+            : 'bg-surface-2 border-line group-hover:border-brand',
         ]"
       >
         <!-- Check -->
-        <svg v-if="modelValue && !indeterminate" class="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
+        <svg v-if="modelValue && !indeterminate" class="w-3 h-3" viewBox="0 0 12 12" fill="none">
           <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <!-- Indeterminate dash -->
-        <svg v-else-if="indeterminate" class="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
+        <svg v-else-if="indeterminate" class="w-3 h-3" viewBox="0 0 12 12" fill="none">
           <path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
       </span>
     </span>
 
-    <span v-if="$slots.default" class="text-sm text-gray-800 dark:text-gray-200 leading-5">
+    <span v-if="$slots.default" class="text-sm text-fg leading-5">
       <slot />
     </span>
   </label>

@@ -2,11 +2,11 @@
   <div :class="['flex flex-col gap-1.5', fullWidth && 'w-full']">
     <!-- Label row -->
     <div v-if="label || $slots.label" class="flex items-center justify-between">
-      <label :for="inputId" class="text-sm font-medium text-gray-700 dark:text-gray-300 leading-none">
+      <label :for="inputId" class="text-sm font-bold text-fg leading-none">
         <slot name="label">{{ label }}</slot>
         <span v-if="required" class="text-danger ml-0.5" aria-hidden="true">*</span>
       </label>
-      <span v-if="$slots.hint || hint" class="text-xs text-subtle">
+      <span v-if="$slots.hint || hint" class="text-xs text-fg-muted">
         <slot name="hint">{{ hint }}</slot>
       </span>
     </div>
@@ -21,7 +21,7 @@
       </svg>
       {{ error }}
     </p>
-    <p v-else-if="helper" class="text-xs text-subtle">{{ helper }}</p>
+    <p v-else-if="helper" class="text-xs text-fg-muted">{{ helper }}</p>
   </div>
 </template>
 

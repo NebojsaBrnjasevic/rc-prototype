@@ -15,7 +15,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  /** 'primary' | 'secondary' | 'ghost' | 'danger' */
+  /** 'primary' | 'secondary' | 'ghost' | 'reward' | 'danger' */
   variant: {
     type: String,
     default: 'primary',
@@ -25,8 +25,9 @@ const props = defineProps({
     type: String,
     default: 'md',
   },
+  /** 'button' | 'a' | a component such as RouterLink (pass `to` as an attribute) */
   tag: {
-    type: String,
+    type: [String, Object],
     default: 'button',
   },
   type: {
@@ -40,26 +41,30 @@ const props = defineProps({
 
 const classes = computed(() => [
   // Base
-  'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none',
+  'inline-flex items-center justify-center font-bold rounded-control transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page disabled:opacity-50 disabled:cursor-not-allowed select-none',
 
   // Width
   props.fullWidth ? 'w-full' : '',
 
-  // Size
+  // Size — md is 44px (minimum touch target)
   {
-    sm: 'h-8 px-3 text-sm gap-1.5',
-    md: 'h-10 px-4 text-sm gap-2',
+    sm: 'h-9 px-3 text-sm gap-1.5',
+    md: 'h-11 px-5 text-[15px] gap-2',
     lg: 'h-12 px-6 text-base gap-2.5',
   }[props.size],
 
-  // Variant — light mode / dark mode via Tailwind dark:
+  // Variant — theme-aware tokens, no dark: pairs needed
   {
+    // One per screen. Glow only on hover/focus.
     primary:
-      'bg-brand-400 text-white hover:bg-brand-500 active:bg-brand-600 shadow-sm dark:ring-offset-surface-dark-base',
+      'bg-brand text-brand-on font-extrabold hover:bg-brand-hover hover:shadow-glow-brand active:translate-y-px',
     secondary:
-      'bg-surface-light-overlay border border-surface-light-border text-gray-700 hover:bg-gray-100 dark:bg-surface-dark-overlay dark:border-surface-dark-border dark:text-gray-200 dark:hover:bg-surface-dark-overlay/70',
+      'bg-surface-2 border border-line text-fg hover:bg-surface-3',
     ghost:
-      'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-surface-dark-overlay dark:hover:text-white',
+      'text-brand hover:bg-brand/10',
+    // Claiming points / bonuses only — gold means reward
+    reward:
+      'bg-reward-fill text-reward-on font-extrabold hover:brightness-105 active:translate-y-px',
     danger:
       'bg-danger text-white hover:bg-danger-dark active:opacity-90',
   }[props.variant],

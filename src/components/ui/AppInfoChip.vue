@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex items-center gap-1 rounded-full border font-medium"
+    class="inline-flex items-center gap-1 rounded-full border font-bold"
     :class="[sizeClasses, variantClasses]"
   >
     <span v-if="arrowChar" class="opacity-75">{{ arrowChar }}</span>
@@ -26,8 +26,8 @@ const sizeClasses = computed(() =>
 )
 
 const variantMap = {
-  default: 'border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
-  brand:   'border-brand-400/30 bg-brand-400/10 text-brand-400',
+  default: 'border-line bg-surface-2 text-fg-2',
+  brand:   'border-brand/30 bg-brand/10 text-brand',
   success: 'border-success/30 bg-success/10 text-success',
   warning: 'border-warning/30 bg-warning/10 text-warning',
   danger:  'border-danger/30 bg-danger/10 text-danger',

@@ -21,8 +21,8 @@ const sizeMap = {
 }
 
 const colorMap = {
-  brand:  'text-brand-400',
+  brand:  'text-brand',
   white:  'text-white',
-  subtle: 'text-gray-400',
+  subtle: 'text-fg-muted',
 }
 </script>

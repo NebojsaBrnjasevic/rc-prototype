@@ -2,18 +2,18 @@
   <div :class="['flex flex-col items-center justify-center text-center py-12 px-6', compact && 'py-6']">
     <!-- Icon -->
     <div v-if="$slots.icon || icon" class="mb-4">
-      <div class="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-surface-dark-overlay flex items-center justify-center mx-auto">
+      <div class="w-14 h-14 rounded-2xl bg-surface-2 border border-line flex items-center justify-center mx-auto">
         <slot name="icon">
-          <component :is="icon" class="w-6 h-6 text-subtle" />
+          <component :is="icon" class="w-6 h-6 text-brand" />
         </slot>
       </div>
     </div>
 
     <!-- Title -->
-    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">{{ title }}</p>
+    <p class="text-[17px] font-extrabold text-fg mb-1">{{ title }}</p>
 
     <!-- Description -->
-    <p v-if="description" class="text-sm text-subtle max-w-xs">{{ description }}</p>
+    <p v-if="description" class="text-sm text-fg-2 max-w-sm">{{ description }}</p>
 
     <!-- Action slot -->
     <div v-if="$slots.action" class="mt-4">

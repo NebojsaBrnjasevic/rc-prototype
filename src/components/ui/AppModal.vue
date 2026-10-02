@@ -3,46 +3,45 @@
     <Transition name="modal-fade">
       <div
         v-if="modelValue"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        class="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-6 overflow-y-auto"
         @mousedown.self="onBackdropClick"
+        @keydown.esc.stop="close"
       >
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" @mousedown="onBackdropClick" />
 
-        <!-- Panel -->
         <div
+          ref="panel"
           role="dialog"
-          :aria-label="title"
           aria-modal="true"
+          :aria-labelledby="titleId"
+          tabindex="-1"
           :class="[
-            'relative z-10 w-full bg-white dark:bg-surface-dark-raised rounded-2xl shadow-2xl flex flex-col overflow-hidden',
+            'modal-panel relative z-10 w-full bg-surface-1 border border-line rounded-panel shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col max-h-[calc(100vh-24px)] sm:max-h-[calc(100vh-48px)] outline-none',
             sizeClass,
           ]"
         >
           <!-- Header -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-surface-light-border dark:border-surface-dark-border">
-            <h2 class="text-base font-semibold text-gray-900 dark:text-white">{{ title }}</h2>
+          <div class="flex items-center gap-3 px-6 py-4 border-b border-line flex-shrink-0">
+            <slot name="header">
+              <h2 :id="titleId" class="font-display font-semibold text-xl flex-1">{{ title }}</h2>
+            </slot>
             <button
-              class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-surface-dark-overlay dark:hover:text-gray-200 transition-colors"
-              @click="$emit('update:modelValue', false)"
+              type="button"
+              class="w-9 h-9 flex items-center justify-center rounded-lg text-fg-muted hover:text-fg hover:bg-surface-2 transition-colors flex-shrink-0"
               aria-label="Close"
+              @click="close"
             >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <XMarkIcon class="w-5 h-5" />
             </button>
           </div>
 
           <!-- Body -->
-          <div class="flex-1 overflow-y-auto px-6 py-5">
+          <div class="flex-1 overflow-y-auto px-6 py-5 scroll-thin">
             <slot />
           </div>
 
-          <!-- Footer (optional) -->
-          <div
-            v-if="$slots.footer"
-            class="px-6 py-4 border-t border-surface-light-border dark:border-surface-dark-border flex items-center justify-end gap-3"
-          >
+          <!-- Footer -->
+          <div v-if="$slots.footer" class="px-6 py-4 border-t border-line flex items-center justify-end gap-3 flex-shrink-0">
             <slot name="footer" />
           </div>
         </div>
@@ -52,7 +51,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   modelValue: Boolean,
@@ -61,20 +61,40 @@ const props = defineProps({
   size: { type: String, default: 'md' },
   /** Whether clicking the backdrop closes the modal */
   closeOnBackdrop: { type: Boolean, default: true },
+  /** id for aria-labelledby when you render your own title in #header */
+  titleId: { type: String, default: () => `modal-${Math.random().toString(36).slice(2, 7)}` },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'close'])
+
+const panel = ref(null)
+let lastFocus = null
 
 const sizeClass = computed(() => ({
-  sm: 'max-w-sm',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl',
-}[props.size] ?? 'max-w-lg'))
+  sm: 'max-w-md',
+  md: 'max-w-xl',
+  lg: 'max-w-3xl',
+  xl: 'max-w-5xl',
+}[props.size] ?? 'max-w-xl'))
 
-function onBackdropClick() {
-  if (props.closeOnBackdrop) emit('update:modelValue', false)
+function close() {
+  emit('update:modelValue', false)
+  emit('close')
 }
+function onBackdropClick() {
+  if (props.closeOnBackdrop) close()
+}
+
+// Focus the dialog on open, give focus back on close
+watch(() => props.modelValue, async (open) => {
+  if (open) {
+    lastFocus = document.activeElement
+    await nextTick()
+    panel.value?.focus()
+  } else {
+    lastFocus?.focus?.()
+  }
+})
 </script>
 
 <style scoped>
@@ -82,8 +102,16 @@ function onBackdropClick() {
 .modal-fade-leave-active {
   transition: opacity 0.2s ease;
 }
+.modal-fade-enter-active .modal-panel,
+.modal-fade-leave-active .modal-panel {
+  transition: transform 0.2s ease;
+}
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
+}
+.modal-fade-enter-from .modal-panel,
+.modal-fade-leave-to .modal-panel {
+  transform: translateY(8px) scale(0.98);
 }
 </style>
