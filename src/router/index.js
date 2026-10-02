@@ -2,11 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 
 // ── Views (lazy-loaded for code splitting) ────────────────────────────────────
-const HomeView       = () => import('@/views/HomeView.vue')
+const MetricsView    = () => import('@/views/MetricsView.vue')
 const ActivityView   = () => import('@/views/ActivityView.vue')
 const DirectoryView  = () => import('@/views/DirectoryView.vue')
-const VendorView     = () => import('@/views/VendorView.vue')
-const DashboardView  = () => import('@/views/DashboardView.vue')
+const CompanyView    = () => import('@/views/CompanyView.vue')
 const ProfileView    = () => import('@/views/ProfileView.vue')
 const ChangelogView  = () => import('@/views/ChangelogView.vue')
 const GuideView      = () => import('@/views/GuideView.vue')
@@ -16,6 +15,7 @@ const LoginView      = () => import('@/views/LoginView.vue')
 const NotFoundView      = () => import('@/views/NotFoundView.vue')
 const DesignSystemView  = () => import('@/views/DesignSystemView.vue')
 const DsComponentView   = () => import('@/views/DsComponentView.vue')
+const RaceView          = () => import('@/views/RaceView.vue')
 
 const routes = [
   // ── Public ────────────────────────────────────────────────────────────────
@@ -30,8 +30,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
-    meta: { requiresAuth: true },
+    component: MetricsView,
+    meta: { requiresAuth: true, title: 'Home' },
   },
   {
     path: '/activity',
@@ -40,28 +40,27 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/race',
+    name: 'race',
+    component: RaceView,
+    meta: { requiresAuth: true, title: 'Race' },
+  },
+  {
     path: '/directory',
     name: 'directory',
     component: DirectoryView,
     meta: { requiresAuth: true },
   },
   {
-    path: '/directory/vendor/:id',
-    name: 'vendor',
-    component: VendorView,
-    meta: { requiresAuth: true },
+    // One detail page for vendors, resellers and end users
+    path: '/directory/:kind(vendor|reseller|end-user)/:id',
+    name: 'company',
+    component: CompanyView,
+    meta: { requiresAuth: true, title: 'Directory' },
   },
-  // ── UX FIX: redirect /dashboard → /dashboards (original app 404'd on singular)
-  {
-    path: '/dashboard',
-    redirect: '/dashboards',
-  },
-  {
-    path: '/dashboards',
-    name: 'dashboards',
-    component: DashboardView,
-    meta: { requiresAuth: true },
-  },
+  // Dashboards was merged into Home (Insights section). Keep old links working.
+  { path: '/dashboards', redirect: { path: '/', hash: '#insights' } },
+  { path: '/dashboard',  redirect: { path: '/', hash: '#insights' } },
   {
     path: '/profile',
     name: 'profile',
@@ -118,8 +117,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
+    // The app shell scrolls inside <main>, not the window — pages handle their own
+    // hash targets (see MetricsView #insights), so never scroll the window here.
     if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    if (to.hash) return false
     return { top: 0 }
   },
 })
@@ -142,6 +143,13 @@ router.beforeEach((to) => {
   if (to.name === 'login' && auth.isAuthenticated) {
     return { name: 'home' }
   }
+})
+
+// ── Document title per route ──────────────────────────────────────────────────
+router.afterEach((to) => {
+  const name = to.meta.title ?? (typeof to.name === 'string' ? to.name.replace(/-/g, ' ') : '')
+  const label = name ? name.charAt(0).toUpperCase() + name.slice(1) : ''
+  document.title = label && to.name !== 'home' ? `${label} · Race Control` : 'Race Control'
 })
 
 export default router
