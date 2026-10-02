@@ -71,8 +71,26 @@
       </div>
     </nav>
 
-    <!-- Bottom: daily bonus (the user lives in the topbar menu) -->
+    <!-- Bottom: tools (Design System) · daily bonus. The user lives in the topbar menu. -->
     <div :class="['p-4 md:p-2 space-y-3 flex-shrink-0', c.bottomPad]">
+      <template v-if="footerItems.length">
+        <div class="mx-2 border-t border-line" aria-hidden="true" />
+        <nav aria-label="Tools" class="space-y-1">
+          <RouterLink
+            v-for="item in footerItems"
+            :key="item.to"
+            :to="item.to"
+            :class="navItemClass(item)"
+            :aria-current="isActive(item) ? 'page' : undefined"
+            :title="item.label"
+            @click="uiStore.closeSidebar()"
+          >
+            <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
+            <span :class="[LABEL, c.label]">{{ item.label }}</span>
+          </RouterLink>
+        </nav>
+      </template>
+
       <!-- Full card (mobile drawer + lg) -->
       <div
         v-if="auth.isAuthenticated"
@@ -170,12 +188,17 @@ const groups = computed(() => [
   {
     title: 'Admin',
     items: [
-      { to: '/admin', label: 'Admin',         icon: ShieldCheckIcon, adminOnly: true },
-      { to: '/ds',    label: 'Design System', icon: SwatchIcon,      adminOnly: true },
-      { to: '/guide', label: 'Guide',         icon: BookOpenIcon },
+      { to: '/admin', label: 'Admin', icon: ShieldCheckIcon, adminOnly: true },
+      { to: '/guide', label: 'Guide', icon: BookOpenIcon },
     ],
   },
 ])
+
+// Pinned to the bottom of the sidebar, apart from the main nav
+const footerItems = computed(() =>
+  [{ to: '/ds', label: 'Design System', icon: SwatchIcon, adminOnly: true }]
+    .filter((i) => !i.adminOnly || auth.user?.isAdmin)
+)
 
 const visibleGroups = computed(() =>
   groups.value
