@@ -1,29 +1,18 @@
 <template>
-  <!-- Mobile backdrop -->
-  <Transition name="backdrop-fade">
-    <div
-      v-if="uiStore.sidebarOpen"
-      class="fixed inset-0 bg-black/50 z-20 md:hidden"
-      @click="uiStore.closeSidebar()"
-    />
-  </Transition>
-
-  <!-- Sidebar: full (w-64) on mobile drawer + lg, icon rail (w-16) on md.
-       On lg the user can collapse it to the rail too (uiStore.sidebarCollapsed). -->
+  <!-- Sidebar (md+): icon rail (w-16) on md, full (w-64) on lg unless collapsed.
+       Phones use AppBottomNav instead. -->
   <aside
     :class="[
-      'fixed left-0 top-0 bottom-0 z-30 flex flex-col',
+      'fixed left-0 top-0 bottom-0 z-30 hidden md:flex flex-col',
       'bg-surface-1 dark:bg-[#08171F] border-r border-line',
       'transition-all duration-200 ease-out',
       c.width,
-      uiStore.sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
     ]"
   >
     <!-- Logo -->
     <RouterLink
       to="/"
       :class="['flex items-center px-4 md:px-[19px] h-[72px] flex-shrink-0 transition-all duration-200 ease-out', c.logoPad, c.logoGap]"
-      @click="uiStore.closeSidebar()"
     >
       <!-- Logo grows when the sidebar is a rail (no wordmark next to it) -->
       <img :src="logoUrl" alt="" :class="['w-auto flex-shrink-0 transition-[height] duration-200 ease-out', c.logoImg]" width="20" height="28" />
@@ -46,7 +35,7 @@
 
     <!-- Nav groups -->
     <nav aria-label="Main" :class="['flex-1 overflow-y-auto px-4 md:px-2 py-2 space-y-5', c.navPad]">
-      <div v-for="group in visibleGroups" :key="group.title" class="space-y-1">
+      <div v-for="group in groups" :key="group.title" class="space-y-1">
         <p :class="c.groupTitle" class="px-3 pb-1.5 overflow-hidden whitespace-nowrap transition-all duration-200 ease-out text-[11px] font-extrabold uppercase tracking-[0.1em] text-fg-muted">
           {{ group.title }}
         </p>
@@ -58,8 +47,7 @@
           :class="navItemClass(item)"
           :aria-current="isActive(item) ? 'page' : undefined"
           :title="item.label"
-          @click="uiStore.closeSidebar()"
-        >
+            >
           <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
           <span :class="[LABEL, c.label]">{{ item.label }}</span>
           <span
@@ -83,8 +71,7 @@
             :class="navItemClass(item)"
             :aria-current="isActive(item) ? 'page' : undefined"
             :title="item.label"
-            @click="uiStore.closeSidebar()"
-          >
+                >
             <component :is="item.icon" class="w-5 h-5 flex-shrink-0" />
             <span :class="[LABEL, c.label]">{{ item.label }}</span>
           </RouterLink>
@@ -141,74 +128,17 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useUiStore } from '@/stores/useUiStore'
-import { useRaceStore } from '@/stores/useRaceStore'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppRewardBox from '@/components/ui/AppRewardBox.vue'
 import logoUrl from '@/assets/logo.svg'
-import {
-  HomeIcon,
-  BoltIcon,
-  BuildingOffice2Icon,
-  TrophyIcon,
-  UserCircleIcon,
-  ShieldCheckIcon,
-  BookOpenIcon,
-  SwatchIcon,
-  GiftIcon,
-  ChevronLeftIcon,
-} from '@heroicons/vue/24/outline'
+import { GiftIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline'
+import { useNav } from './useNav'
 
-const route = useRoute()
 const auth = useAuthStore()
 const uiStore = useUiStore()
-const race = useRaceStore()
-
-// Week race always shows its countdown in the nav, whatever tab Metrics has open
-const weekDaysLeft = computed(() => race.periods.find((p) => p.key === 'week')?.daysLeft)
-
-const groups = computed(() => [
-  {
-    title: 'Workspace',
-    items: [
-      { to: '/',           label: 'Home',       icon: HomeIcon },
-      { to: '/activity',   label: 'Activity',   icon: BoltIcon },
-      { to: '/directory',  label: 'Directory',  icon: BuildingOffice2Icon },
-    ],
-  },
-  {
-    title: 'Compete',
-    items: [
-      { to: '/race',    label: 'Race',    icon: TrophyIcon, tag: weekDaysLeft.value > 0 ? `${weekDaysLeft.value}d` : '<1d' },
-      { to: '/profile', label: 'Profile', icon: UserCircleIcon },
-    ],
-  },
-  {
-    title: 'Admin',
-    items: [
-      { to: '/admin', label: 'Admin', icon: ShieldCheckIcon, adminOnly: true },
-      { to: '/guide', label: 'Guide', icon: BookOpenIcon },
-    ],
-  },
-])
-
-// Pinned to the bottom of the sidebar, apart from the main nav
-const footerItems = computed(() =>
-  [{ to: '/ds', label: 'Design System', icon: SwatchIcon, adminOnly: true }]
-    .filter((i) => !i.adminOnly || auth.user?.isAdmin)
-)
-
-const visibleGroups = computed(() =>
-  groups.value
-    .map((g) => ({ ...g, items: g.items.filter((i) => !i.adminOnly || auth.user?.isAdmin) }))
-    .filter((g) => g.items.length)
-)
-
-function isActive(item) {
-  return item.to === '/' ? route.path === '/' : route.path.startsWith(item.to)
-}
+const { groups, footerItems, isActive } = useNav()
 
 // Responsive class sets. md is always the icon rail; lg is full unless collapsed.
 // On lg, labels stay in the DOM and animate width/opacity so collapsing feels fluid
@@ -261,13 +191,3 @@ function navItemClass(item) {
 }
 </script>
 
-<style scoped>
-.backdrop-fade-enter-active,
-.backdrop-fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.backdrop-fade-enter-from,
-.backdrop-fade-leave-to {
-  opacity: 0;
-}
-</style>

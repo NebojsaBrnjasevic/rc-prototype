@@ -23,6 +23,7 @@
     --rc-on-brand:    255 255 255;
     --rc-reward:      166 108   0;   /* gold for text on light surfaces */
     --rc-reward-fill: 245 182  35;
+    --rc-presales:    167 139 250;   /* #A78BFA — glows, gradients, art */
     --rc-on-reward:    31  21   0;
   }
 
@@ -40,6 +41,7 @@
     --rc-on-brand:      4  33  46;   /* #04212E */
     --rc-reward:      245 182  35;   /* #F5B623 */
     --rc-reward-fill: 245 182  35;
+    --rc-presales:    167 139 250;   /* #A78BFA — glows, gradients, art */
     --rc-on-reward:    31  21   0;
   }
 }

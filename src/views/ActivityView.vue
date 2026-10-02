@@ -6,7 +6,8 @@
         <h1 class="font-display font-bold text-[28px] sm:text-[34px] tracking-tight">Activities</h1>
         <p class="mt-2 text-base text-fg-2">The work you've logged, the follow-up it creates and the pipeline behind it.</p>
       </div>
-      <AppButton @click="ui.openActivityModal()">
+      <!-- Phones use the bottom bar's Log button -->
+      <AppButton class="max-md:!hidden" @click="ui.openActivityModal()">
         <PlusIcon class="w-[18px] h-[18px] stroke-[2.5]" />Log activity
       </AppButton>
     </div>

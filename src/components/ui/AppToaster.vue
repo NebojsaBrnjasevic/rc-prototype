@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-4 right-4 z-[70] flex flex-col gap-2 w-[min(360px,calc(100vw-32px))]" aria-live="polite" role="status">
+  <div class="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:bottom-4 right-4 z-[70] flex flex-col gap-2 w-[min(360px,calc(100vw-32px))]" aria-live="polite" role="status">
     <TransitionGroup name="toast">
       <div
         v-for="t in ui.toasts"

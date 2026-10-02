@@ -17,12 +17,16 @@
 
       <!-- Scrollable content -->
       <main class="flex-1 overflow-y-auto">
-        <div class="max-w-screen-2xl mx-auto px-4 sm:px-8 py-8">
+        <!-- Phones: extra bottom space so content clears the bottom bar -->
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-8 pt-8 pb-[calc(7rem+env(safe-area-inset-bottom))] md:pb-8">
           <slot />
         </div>
       </main>
 
     </div>
+
+    <!-- Phones: bottom tab bar -->
+    <AppBottomNav />
 
     <!-- App-wide overlays: Log activity, activity details, toasts -->
     <ActivityModal />
@@ -34,6 +38,7 @@
 <script setup>
 import AppTopbar from './AppTopbar.vue'
 import AppSidebar from './AppSidebar.vue'
+import AppBottomNav from './AppBottomNav.vue'
 import ActivityModal from '@/components/features/activity/ActivityModal.vue'
 import ActivityDrawer from '@/components/features/activity/ActivityDrawer.vue'
 import AppToaster from '@/components/ui/AppToaster.vue'

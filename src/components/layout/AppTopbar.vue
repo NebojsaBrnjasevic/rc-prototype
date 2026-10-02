@@ -3,16 +3,10 @@
 
     <div class="flex items-center h-[72px] px-4 sm:px-8 gap-2.5">
 
-      <!-- Mobile hamburger (sidebar is a rail from md up) -->
-      <div class="md:hidden">
-        <button
-          class="icon-btn"
-          @click="uiStore.toggleSidebar()"
-          aria-label="Open navigation"
-        >
-          <Bars3Icon class="w-5 h-5" />
-        </button>
-      </div>
+      <!-- Phones: logo (navigation lives in the bottom bar) -->
+      <RouterLink to="/" class="md:hidden flex items-center" aria-label="Race Control home">
+        <img :src="logoUrl" alt="" class="h-8 w-auto" width="23" height="32" />
+      </RouterLink>
 
       <!-- Spacer -->
       <div class="flex-1" />
@@ -123,14 +117,13 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { useThemeStore } from '@/stores/useThemeStore'
-import { useUiStore } from '@/stores/useUiStore'
 import { useRaceStore } from '@/stores/useRaceStore'
 import AppXpBar from '@/components/ui/AppXpBar.vue'
 import AppRewardBox from '@/components/ui/AppRewardBox.vue'
 import AppAvatar from '@/components/ui/AppAvatar.vue'
 import AppTooltip from '@/components/ui/AppTooltip.vue'
+import logoUrl from '@/assets/logo.svg'
 import {
-  Bars3Icon,
   SunIcon,
   MoonIcon,
   Cog6ToothIcon,
@@ -143,7 +136,6 @@ import {
 
 const auth = useAuthStore()
 const themeStore = useThemeStore()
-const uiStore = useUiStore()
 const router = useRouter()
 
 const race = useRaceStore()

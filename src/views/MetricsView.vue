@@ -10,7 +10,8 @@
           Your race, your numbers and how the team is doing — all in one place.
         </p>
       </div>
-      <AppButton @click="ui.openActivityModal()">
+      <!-- Phones use the bottom bar's Log button -->
+      <AppButton class="max-md:!hidden" @click="ui.openActivityModal()">
         <PlusIcon class="w-[18px] h-[18px] stroke-[2.5]" />Log activity
       </AppButton>
     </div>

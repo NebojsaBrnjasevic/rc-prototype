@@ -8,19 +8,8 @@ function readCollapsed() {
 }
 
 export const useUiStore = defineStore('ui', () => {
-  // Mobile drawer (below md)
-  const sidebarOpen = ref(false)
-
   // Desktop (lg+) icon-rail mode — persisted per browser
   const sidebarCollapsed = ref(readCollapsed())
-
-  function toggleSidebar() {
-    sidebarOpen.value = !sidebarOpen.value
-  }
-
-  function closeSidebar() {
-    sidebarOpen.value = false
-  }
 
   function toggleSidebarCollapsed() {
     sidebarCollapsed.value = !sidebarCollapsed.value
@@ -54,7 +43,7 @@ export const useUiStore = defineStore('ui', () => {
   }
 
   return {
-    sidebarOpen, toggleSidebar, closeSidebar, sidebarCollapsed, toggleSidebarCollapsed,
+    sidebarCollapsed, toggleSidebarCollapsed,
     activityModal, openActivityModal, closeActivityModal,
     activityDrawerId, openActivity, closeActivity,
     toasts, toast,
