@@ -254,8 +254,8 @@ const demoFormSelect = ref('')
 const demoPeriod    = ref('week')
 const demoReward    = ref(true)
 const demoTextarea  = ref('')
-const demoComboSingle = ref('Softcat plc')
-const demoComboMulti  = ref(['CrowdStrike'])
+const demoComboSingle = ref('Brightwave plc')
+const demoComboMulti  = ref(['Sentrix'])
 const demoModal     = ref(false)
 const demoDrawer    = ref(false)
 
@@ -415,13 +415,13 @@ const componentData = {
       {
         name: 'Sizes',
         description: 'Five sizes from xs (24px) to xl (56px).',
-        snippet: `<AppAvatar name="Nikola Gavric" size="xl" />
-<AppAvatar name="Wolfgang H." size="lg" />
-<AppAvatar name="Chris F" size="md" />
-<AppAvatar name="Darren G" size="sm" />
+        snippet: `<AppAvatar name="Luka Petrovic" size="xl" />
+<AppAvatar name="Lukas B." size="lg" />
+<AppAvatar name="James H" size="md" />
+<AppAvatar name="Tom W" size="sm" />
 <AppAvatar name="A" size="xs" />`,
         demo: defineComponent({ setup() {
-          const people = [['Nikola Gavric','xl'],['Wolfgang H.','lg'],['Chris F','md'],['Darren G','sm'],['A','xs']]
+          const people = [['Luka Petrovic','xl'],['Lukas B.','lg'],['James H','md'],['Tom W','sm'],['A','xs']]
           return () => h('div', { class: 'flex flex-wrap items-end gap-4' }, people.map(([name, size]) =>
             h('div', { class: 'flex flex-col items-center gap-1.5' }, [
               h(AppAvatar, { name, size }),
@@ -445,7 +445,7 @@ const componentData = {
   </div>
 </div>`,
         demo: defineComponent({ setup() {
-          const names = ['Nikola Gavric','Wolfgang H','Chris F','Darren G']
+          const names = ['Luka Petrovic','Lukas B','James H','Tom W']
           return () => h('div', { class: 'flex -space-x-2' }, [
             ...names.map(n => h(AppAvatar, { name: n, size: 'sm', class: 'ring-2 ring-surface-1' })),
             h('div', { class: 'w-8 h-8 rounded-xl bg-surface-2 border-2 border-surface-1 flex items-center justify-center' },
@@ -1349,12 +1349,12 @@ const componentData = {
       {
         name: 'Default',
         snippet: `<AppFormField label="Vendor name" helper="The vendor you met with">
-  <AppInput v-model="vendor" placeholder="e.g. CrowdStrike" />
+  <AppInput v-model="vendor" placeholder="e.g. Sentrix" />
 </AppFormField>`,
         demo: defineComponent({ setup() {
           return () => h('div', { class: 'max-w-sm' },
             h(AppFormField, { label: 'Vendor name', helper: 'The vendor you met with' }, {
-              default: () => h(AppInput, { modelValue: demoFormInput.value, 'onUpdate:modelValue': v => { demoFormInput.value = v }, placeholder: 'e.g. CrowdStrike' }),
+              default: () => h(AppInput, { modelValue: demoFormInput.value, 'onUpdate:modelValue': v => { demoFormInput.value = v }, placeholder: 'e.g. Sentrix' }),
             })
           )
         } }),
@@ -1521,7 +1521,7 @@ COMPANY_STYLE.reseller.soft      // 'bg-brand/15 text-brand'
       {
         name: 'Type Scale',
         description: 'Display for hierarchy, sans for reading, mono for time.',
-        snippet: `<h1 class="font-display font-bold text-[34px] tracking-tight">Good morning, Nikola</h1>
+        snippet: `<h1 class="font-display font-bold text-[34px] tracking-tight">Good morning, Luka</h1>
 <h2 class="font-display font-bold text-[22px]">Weekly race</h2>
 <h3 class="font-display font-semibold text-xl">Recent activity</h3>
 <p class="text-base text-fg-2">Body copy</p>
@@ -1533,9 +1533,9 @@ COMPANY_STYLE.reseller.soft      // 'bg-brand/15 text-brand'
             { cls: 'font-display font-bold text-[34px] tracking-tight', label: 'display · 34 / 700', sample: 'Good morning' },
             { cls: 'font-display font-bold text-[22px]', label: 'display · 22 / 700', sample: 'Weekly race' },
             { cls: 'font-display font-semibold text-xl', label: 'display · 20 / 600', sample: 'Recent activity' },
-            { cls: 'text-lg font-extrabold', label: 'sans · 18 / 800', sample: 'Wolfgang Hohenthanner' },
+            { cls: 'text-lg font-extrabold', label: 'sans · 18 / 800', sample: 'Lukas Brenner' },
             { cls: 'text-base text-fg-2', label: 'sans · 16 / 500', sample: 'Log a Sales activity before Sunday' },
-            { cls: 'text-sm text-fg-2', label: 'sans · 14 / 500', sample: 'Sales · 2026-09-25 · CrowdStrike' },
+            { cls: 'text-sm text-fg-2', label: 'sans · 14 / 500', sample: 'Sales · 2026-09-25 · Sentrix' },
             { cls: 'text-overline text-fg-2', label: 'text-overline · 12', sample: 'Pipeline generated' },
             { cls: 'font-display font-bold text-num-lg tabular', label: 'text-num-lg · 40', sample: '£22,000' },
             { cls: 'font-mono font-bold text-[15px] text-brand', label: 'mono · 15 / 700', sample: '03d 14h 22m' },
@@ -1896,8 +1896,8 @@ mb-8  → 32px  between page sections`,
 <AppCombobox v-model="vendors" :options="vendors" multiple tone="vendor" placeholder="Search vendors…" />`,
         demo: defineComponent({ setup() {
           const opts = (list) => list.map((label) => ({ value: label, label }))
-          const resellers = opts(['Softcat plc', 'Bechtle Ltd', 'Computacenter', 'Bytes Software Services'])
-          const vendors = opts(['CrowdStrike', 'Abnormal AI', 'Mimecast', 'SailPoint', 'Netskope'])
+          const resellers = opts(['Brightwave plc', 'Kessler IT Ltd', 'Compunet', 'Kilobyte Software Services'])
+          const vendors = opts(['Sentrix', 'Inboxa AI', 'Mailguard', 'IdentiQ', 'Skyedge'])
           return () => h('div', { class: 'grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl' }, [
             h(AppFormField, { label: 'Reseller', inputId: 'ds-cb-1', helper: 'Single select' }, { default: () => h(AppCombobox, { inputId: 'ds-cb-1', options: resellers, tone: 'reseller', placeholder: 'Search resellers…', modelValue: demoComboSingle.value, 'onUpdate:modelValue': (v) => { demoComboSingle.value = v } }) }),
             h(AppFormField, { label: 'Vendors', inputId: 'ds-cb-2', helper: 'Multiple' }, { default: () => h(AppCombobox, { inputId: 'ds-cb-2', options: vendors, multiple: true, tone: 'vendor', placeholder: 'Search vendors…', modelValue: demoComboMulti.value, 'onUpdate:modelValue': (v) => { demoComboMulti.value = v } }) }),
@@ -2076,7 +2076,7 @@ ui.toast('Salesforce sync failed', 'danger')`,
         demo: defineComponent({ setup() { return () => h(DataTable, {
           caption: 'Users',
           columns: [{ key: 'name', label: 'User' }, { key: 'territory', label: 'Territory', class: 'hidden lg:table-cell' }, { key: 'points', label: 'Points', align: 'right' }],
-          rows: [{ id: 1, name: 'Amy Shingles', territory: 'Ignition - UK', points: 32900 }, { id: 2, name: 'Wolfgang Hohenthanner', territory: 'Ignition - DACH', points: 1700 }, { id: 3, name: 'Nikola Gavric', territory: 'Ignition - UK', points: 710 }],
+          rows: [{ id: 1, name: 'Hannah Clarke', territory: 'Northstar - UK', points: 32900 }, { id: 2, name: 'Lukas Brenner', territory: 'Northstar - DACH', points: 1700 }, { id: 3, name: 'Luka Petrovic', territory: 'Northstar - UK', points: 710 }],
         }, { 'cell-points': ({ value }) => h('span', { class: 'font-display font-bold text-reward tabular' }, value.toLocaleString('en-GB')) }) } }),
       },
     ],

@@ -4,7 +4,7 @@
  * TODO: remove when the real auth API is wired up.
  */
 export const DEMO_LOGIN = {
-  email: 'nikola.gavric@devtechgroup.com',
+  email: 'luka.petrovic@northstar.example',
   password: 'race-control-demo',
   code: '123456',
 }

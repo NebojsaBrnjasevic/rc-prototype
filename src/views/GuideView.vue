@@ -320,7 +320,7 @@ const steps = [
     fields: [
       {
         label: 'Description',
-        example: 'Conducted a demo of CrowdStrike Falcon platform with ABC Corp\'s security team. Discussed endpoint protection capabilities, pricing tiers, and integration with their existing SIEM.',
+        example: 'Conducted a demo of Sentrix platform with ABC Corp\'s security team. Discussed endpoint protection capabilities, pricing tiers, and integration with their existing SIEM.',
       },
       {
         label: 'Next Step',

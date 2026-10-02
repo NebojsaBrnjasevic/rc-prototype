@@ -23,27 +23,27 @@ const PERIOD_META = {
   year:    { label: 'Year',    labelShort: 'Year',  race: 'Yearly race',    thisLabel: 'this year' },
 }
 
-// Mirrors production (rc.ignition.technology) leaderboard data.
+// Mirrors production (the production app) leaderboard data.
 const MOCK_STANDINGS = {
   week: [
-    { name: 'Wolfgang Hohenthanner', level: 5,  activities: 13, points: 1700 },
-    { name: 'Darren Goswell',        level: 4,  activities: 2,  points: 400 },
-    { name: 'Shane Rogers',          level: 10, activities: 3,  points: 400 },
-    { name: 'Chris Faulkner',        level: 15, activities: 2,  points: 300 },
-    { name: 'Stefan Gessner',        level: 4,  activities: 1,  points: 200 },
+    { name: 'Lukas Brenner', level: 5,  activities: 13, points: 1700 },
+    { name: 'Tom Whitaker',        level: 4,  activities: 2,  points: 400 },
+    { name: 'Ciaran Doyle',          level: 10, activities: 3,  points: 400 },
+    { name: 'James Holloway',        level: 15, activities: 2,  points: 300 },
+    { name: 'Jonas Reiter',        level: 4,  activities: 1,  points: 200 },
   ],
   month: [
-    { name: 'Darren Goswell', level: 4, activities: 1, points: 200 },
+    { name: 'Tom Whitaker', level: 4, activities: 1, points: 200 },
   ],
   quarter: [
-    { name: 'Darren Goswell', level: 4, activities: 1, points: 200 },
+    { name: 'Tom Whitaker', level: 4, activities: 1, points: 200 },
   ],
   year: [
-    { name: 'Amy Shingles',    level: 22, activities: 282, points: 32900 },
-    { name: 'Lewis Harman',    level: 22, activities: 254, points: 32500 },
-    { name: 'Arno van Doorn',  level: 21, activities: 207, points: 25750 },
-    { name: 'Kim Paulsen',     level: 16, activities: 133, points: 18700 },
-    { name: 'Dominic Hammond', level: 15, activities: 120, points: 14750 },
+    { name: 'Hannah Clarke',    level: 22, activities: 282, points: 32900 },
+    { name: 'Oliver Bennett',    level: 22, activities: 254, points: 32500 },
+    { name: 'Pieter de Vries',  level: 21, activities: 207, points: 25750 },
+    { name: 'Freja Lindqvist',     level: 16, activities: 133, points: 18700 },
+    { name: 'Sam Fletcher', level: 15, activities: 120, points: 14750 },
   ],
 }
 

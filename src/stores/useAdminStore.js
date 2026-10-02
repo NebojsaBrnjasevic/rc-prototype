@@ -19,40 +19,40 @@ const STATS = {
 }
 
 const MOCK_USERS = [
-  { id: 'u01', name: 'Amy Shingles',          email: 'amy.shingles@ignition.technology',     role: 'Manager', territory: 'Ignition - UK',      level: 22, points: 32_900, status: 'Active',   lastActive: '2 hours ago' },
-  { id: 'u02', name: 'Lewis Harman',          email: 'lewis.harman@ignition.technology',     role: 'Member',  territory: 'Ignition - UK',      level: 22, points: 32_500, status: 'Active',   lastActive: '5 hours ago' },
-  { id: 'u03', name: 'Arno van Doorn',        email: 'arno.vandoorn@ignition.technology',    role: 'Manager', territory: 'Ignition - Benelux', level: 21, points: 25_750, status: 'Active',   lastActive: 'yesterday' },
-  { id: 'u04', name: 'Kim Paulsen',           email: 'kim.paulsen@ignition.technology',      role: 'Member',  territory: 'Ignition - Nordics', level: 16, points: 18_700, status: 'Active',   lastActive: 'yesterday' },
-  { id: 'u05', name: 'Dominic Hammond',       email: 'dominic.hammond@ignition.technology',  role: 'Member',  territory: 'Ignition - UK',      level: 15, points: 14_750, status: 'Active',   lastActive: '3 days ago' },
-  { id: 'u06', name: 'Wolfgang Hohenthanner', email: 'wolfgang.h@ignition.technology',       role: 'Manager', territory: 'Ignition - DACH',    level: 5,  points: 1_700,  status: 'Active',   lastActive: '1 hour ago' },
-  { id: 'u07', name: 'Nikola Gavric',         email: 'nikola.gavric@devtechgroup.com',       role: 'Admin',   territory: 'Ignition - UK',      level: 3,  points: 710,    status: 'Active',   lastActive: 'now' },
-  { id: 'u08', name: 'Darren Goswell',        email: 'darren.goswell@ignition.technology',   role: 'Member',  territory: 'Ignition - UK',      level: 4,  points: 1_150,  status: 'Active',   lastActive: '4 hours ago' },
-  { id: 'u09', name: 'Shane Rogers',          email: 'shane.rogers@ignition.technology',     role: 'Member',  territory: 'Ignition - Ireland', level: 10, points: 5_600,  status: 'Active',   lastActive: '2 days ago' },
-  { id: 'u10', name: 'Chris Faulkner',        email: 'chris.faulkner@ignition.technology',   role: 'Member',  territory: 'Ignition - UK',      level: 15, points: 14_100, status: 'Inactive', lastActive: '3 weeks ago' },
-  { id: 'u11', name: 'Stefan Gessner',        email: 'stefan.gessner@ignition.technology',   role: 'Member',  territory: 'Ignition - DACH',    level: 4,  points: 1_000,  status: 'Active',   lastActive: '6 days ago' },
+  { id: 'u01', name: 'Hannah Clarke',          email: 'hannah.clarke@northstar.example',     role: 'Manager', territory: 'Northstar - UK',      level: 22, points: 32_900, status: 'Active',   lastActive: '2 hours ago' },
+  { id: 'u02', name: 'Oliver Bennett',          email: 'oliver.bennett@northstar.example',     role: 'Member',  territory: 'Northstar - UK',      level: 22, points: 32_500, status: 'Active',   lastActive: '5 hours ago' },
+  { id: 'u03', name: 'Pieter de Vries',        email: 'pieter.devries@northstar.example',    role: 'Manager', territory: 'Northstar - Benelux', level: 21, points: 25_750, status: 'Active',   lastActive: 'yesterday' },
+  { id: 'u04', name: 'Freja Lindqvist',           email: 'freja.lindqvist@northstar.example',      role: 'Member',  territory: 'Northstar - Nordics', level: 16, points: 18_700, status: 'Active',   lastActive: 'yesterday' },
+  { id: 'u05', name: 'Sam Fletcher',       email: 'sam.fletcher@northstar.example',  role: 'Member',  territory: 'Northstar - UK',      level: 15, points: 14_750, status: 'Active',   lastActive: '3 days ago' },
+  { id: 'u06', name: 'Lukas Brenner', email: 'lukas.brenner@northstar.example',       role: 'Manager', territory: 'Northstar - DACH',    level: 5,  points: 1_700,  status: 'Active',   lastActive: '1 hour ago' },
+  { id: 'u07', name: 'Luka Petrovic',         email: 'luka.petrovic@northstar.example',       role: 'Admin',   territory: 'Northstar - UK',      level: 3,  points: 710,    status: 'Active',   lastActive: 'now' },
+  { id: 'u08', name: 'Tom Whitaker',        email: 'tom.whitaker@northstar.example',   role: 'Member',  territory: 'Northstar - UK',      level: 4,  points: 1_150,  status: 'Active',   lastActive: '4 hours ago' },
+  { id: 'u09', name: 'Ciaran Doyle',          email: 'ciaran.doyle@northstar.example',     role: 'Member',  territory: 'Northstar - Ireland', level: 10, points: 5_600,  status: 'Active',   lastActive: '2 days ago' },
+  { id: 'u10', name: 'James Holloway',        email: 'james.holloway@northstar.example',   role: 'Member',  territory: 'Northstar - UK',      level: 15, points: 14_100, status: 'Inactive', lastActive: '3 weeks ago' },
+  { id: 'u11', name: 'Jonas Reiter',        email: 'jonas.reiter@northstar.example',   role: 'Member',  territory: 'Northstar - DACH',    level: 4,  points: 1_000,  status: 'Active',   lastActive: '6 days ago' },
 ]
 
 const MOCK_FAILED_SYNCS = [
-  { id: 's1', title: 'Meeting with Alem Sistem regarding ongoing projects (Fedja). As for BH Telekom, the tender is expected to be issued in August…', error: 'Failed to create Sales Activity: <html><body><center>We are down for maintenance.</center></body></html>', ago: '14 days ago' },
-  { id: 's2', title: 'CISO.bg - podcast. Presentor - Presales engineer from CRWD + Presales Engineer from EXN (Rafal)', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Ignition - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
-  { id: 's3', title: 'On-site event organized by Cyber Club Bulgaria, gathering together the cybersecurity community at one place (around 500 participants).', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Ignition - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
-  { id: 's4', title: 'Cyber Security Talks Bulgaria - onsite event dedicated to Crowdstrike', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Ignition - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
-  { id: 's5', title: 'End Customer Event - Protecting Your Organization in the Era of AI-Powered Adversaries', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Ignition - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
+  { id: 's1', title: 'Meeting with a systems integrator about ongoing projects. A telecom tender is expected to be issued in August…', error: 'Failed to create Sales Activity: <html><body><center>We are down for maintenance.</center></body></html>', ago: '14 days ago' },
+  { id: 's2', title: 'Security podcast — presales engineers from Sentrix and Meridian Networks', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Northstar - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
+  { id: 's3', title: 'On-site event organized by a local cyber club, gathering together the cybersecurity community at one place (around 500 participants).', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Northstar - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
+  { id: 's4', title: 'Cyber Security Talks — onsite event dedicated to Sentrix', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Northstar - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
+  { id: 's5', title: 'End Customer Event - Protecting Your Organization in the Era of AI-Powered Adversaries', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Northstar - CEE","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '6 months ago' },
   { id: 's6', title: 'Example new partner onboarding - updated', error: 'The requested resource does not exist', ago: '6 months ago' },
   { id: 's7', title: 'Failed Activity Sync Test - Example Example', error: 'Failed to create Sales Activity: [{"message":"No such column \'Related_Opportunity__c\' on object of type Sales_Activity__c","errorCode":"INVALID_FIELD"}]', ago: '6 months ago' },
-  { id: 's8', title: 'I sent the follow ups to the subscribers of the Mimecast webinar 26-02-2026', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Ignition - Italy","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '7 months ago' },
+  { id: 's8', title: 'I sent the follow ups to the subscribers of the Mailguard webinar 26-02-2026', error: 'Failed to create Sales Activity: [{"message":"bad value for restricted picklist field: Northstar - Italy","errorCode":"INVALID_OR_NULL_FOR_RESTRICTED_PICKLIST","fields":["Territory__c"]}]', ago: '7 months ago' },
 ]
 
 const MOCK_AUDIT = [
   { id: 'e01', type: 'activity.sync_success', entity: 'activity · 1a3411fd…', actor: 'System',                time: 'about 17 hours ago' },
-  { id: 'e02', type: 'activity.created',      entity: 'activity · 1a3411fd…', actor: 'Wolfgang Hohenthanner', time: 'about 17 hours ago' },
+  { id: 'e02', type: 'activity.created',      entity: 'activity · 1a3411fd…', actor: 'Lukas Brenner', time: 'about 17 hours ago' },
   { id: 'e03', type: 'activity.sync_success', entity: 'activity · e9b7f49e…', actor: 'System',                time: 'about 19 hours ago' },
-  { id: 'e04', type: 'activity.created',      entity: 'activity · e3b7f49e…', actor: 'Darren Goswell',        time: 'about 19 hours ago' },
+  { id: 'e04', type: 'activity.created',      entity: 'activity · e3b7f49e…', actor: 'Tom Whitaker',        time: 'about 19 hours ago' },
   { id: 'e05', type: 'activity.sync_success', entity: 'activity · 93b6e90f…', actor: 'System',                time: 'about 20 hours ago' },
-  { id: 'e06', type: 'reward.claimed',        entity: 'daily bonus · +50 pts', actor: 'Shane Rogers',         time: 'about 21 hours ago' },
-  { id: 'e07', type: 'user.role_changed',     entity: 'user · Arno van Doorn → Manager', actor: 'Nikola Gavric', time: 'yesterday' },
+  { id: 'e06', type: 'reward.claimed',        entity: 'daily bonus · +50 pts', actor: 'Ciaran Doyle',         time: 'about 21 hours ago' },
+  { id: 'e07', type: 'user.role_changed',     entity: 'user · Pieter de Vries → Manager', actor: 'Luka Petrovic', time: 'yesterday' },
   { id: 'e08', type: 'activity.sync_failed',  entity: 'activity · 7c21aa03…', actor: 'System',                time: '14 days ago' },
-  { id: 'e09', type: 'user.created',          entity: 'user · Stefan Gessner', actor: 'Nikola Gavric',        time: '3 weeks ago' },
+  { id: 'e09', type: 'user.created',          entity: 'user · Jonas Reiter', actor: 'Luka Petrovic',        time: '3 weeks ago' },
 ]
 
 /** Turn a raw Salesforce error into a short, human label + a group key. */

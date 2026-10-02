@@ -12,13 +12,13 @@
           <img :src="logoUrl" alt="" class="h-9 w-auto" width="25" height="36" />
           <span class="font-display font-bold text-lg tracking-[0.02em]">RACE CONTROL</span>
         </div>
-        <p class="text-sm text-fg-muted mt-1.5 pl-[37px]">by Ignition Technology</p>
+        <p class="text-sm text-fg-muted mt-1.5 pl-[37px]">by Northstar Distribution</p>
       </div>
 
       <div class="relative max-w-xl">
         <h2 class="font-display font-bold text-[52px] leading-[1.02] tracking-tight">
           Accelerating
-          <span class="bg-gradient-to-r from-brand to-presales bg-clip-text text-transparent">Ignition</span><br />
+          <span class="bg-gradient-to-r from-brand to-presales bg-clip-text text-transparent">Northstar</span><br />
           <span class="bg-gradient-to-r from-presales to-reward-fill bg-clip-text text-transparent">Driven</span> Business
         </h2>
         <p class="text-lg text-fg-2 mt-6 leading-relaxed max-w-md">
@@ -26,7 +26,7 @@
         </p>
       </div>
 
-      <p class="relative text-[13px] text-fg-muted">© {{ year }} Ignition Technology</p>
+      <p class="relative text-[13px] text-fg-muted">© {{ year }} Northstar Distribution</p>
     </section>
 
     <!-- Form side -->
@@ -38,7 +38,7 @@
             <img :src="logoUrl" alt="" class="h-8 w-auto" width="23" height="32" />
             <span class="font-display font-bold text-lg tracking-[0.02em]">RACE CONTROL</span>
           </div>
-          <p class="text-[13px] text-fg-muted mt-1">by Ignition Technology</p>
+          <p class="text-[13px] text-fg-muted mt-1">by Northstar Distribution</p>
         </div>
 
         <Transition name="step" mode="out-in">
@@ -190,7 +190,7 @@ const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
-const TERRITORIES = ['Ignition - UK', 'Ignition - DACH', 'Ignition - Benelux', 'Ignition - Nordics', 'Ignition - France', 'Ignition - CEE']
+const TERRITORIES = ['Northstar - UK', 'Northstar - DACH', 'Northstar - Benelux', 'Northstar - Nordics', 'Northstar - France', 'Northstar - CEE']
 const year = new Date().getFullYear()
 
 const step = ref('signin') // 'signin' | 'verify' | 'request' | 'requested'
@@ -214,7 +214,7 @@ function autofill(field) {
 }
 function autofillRequest(field) {
   if (field === 'name' && !request.name) request.name = 'Jane Smith'
-  if (field === 'email' && !request.email) request.email = 'jane.smith@ignition.technology'
+  if (field === 'email' && !request.email) request.email = 'jane.smith@northstar.example'
   if (field === 'territory' && !request.territory) request.territory = TERRITORIES[0]
 }
 

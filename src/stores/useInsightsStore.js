@@ -19,8 +19,8 @@ export const SCOPES = ['my', 'team', 'all']
 
 // TODO: comes from the user's team in the API
 const TEAM = [
-  'Nikola Gavric', 'Wolfgang Hohenthanner', 'Darren Goswell',
-  'Shane Rogers', 'Chris Faulkner', 'Stefan Gessner',
+  'Luka Petrovic', 'Lukas Brenner', 'Tom Whitaker',
+  'Ciaran Doyle', 'James Holloway', 'Jonas Reiter',
 ]
 
 export const RECORD_TYPES = ['Sales', 'Pre-Sales', 'Marketing']

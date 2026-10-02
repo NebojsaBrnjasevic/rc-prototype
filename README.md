@@ -2,7 +2,7 @@
 
 Vue 3 + Vite + Pinia + Tailwind CSS rebuild of the Race Control activity tracking app (originally React).
 
-Built from a UX audit of the live production app at `rc.ignition.technology`.  
+Built from a UX audit of the live production app at `the production app`.  
 See `../race-control-ux-audit.md` for the full audit findings and design rationale.
 
 ---
@@ -153,7 +153,7 @@ All views and components use the semantic tokens — the old `surface-dark-*` / 
 # https://github.com/NebojsaBrnjasevic/msp-prototype
 
 # Push sa terminala:
-cd "Ignition/race-control-vue"
+cd race-control-vue
 git push -u origin main
 ```
 

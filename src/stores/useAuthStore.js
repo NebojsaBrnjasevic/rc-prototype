@@ -6,7 +6,7 @@ import { DEMO_LOGIN } from '@/data/demoLogin'
  * Mock auth store — replace with real API calls when integrating with backend.
  *
  * The mock user mirrors what was observed in the Race Control audit:
- * - Nikola Gavric, Admin, 710 lifetime points (→ Level 3, derived — see levelInfo)
+ * - Luka Petrovic, Admin, 710 lifetime points (→ Level 3, derived — see levelInfo)
  */
 
 // Lifetime XP needed to reach each level (index 0 = Level 1).
@@ -33,12 +33,12 @@ export function getLevelInfo(points = 0) {
 }
 const MOCK_USER = {
   id: 'usr_001',
-  name: 'Nikola Gavric',
-  email: 'nikola.gavric@devtechgroup.com',
+  name: 'Luka Petrovic',
+  email: 'luka.petrovic@northstar.example',
   initials: 'NG',
   isAdmin: true,
   points: 710,
-  territory: 'Ignition Technology UK',
+  territory: 'Northstar Distribution UK',
   memberSince: '2026-07-01',
   streak: 0,
   // Security
