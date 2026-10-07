@@ -4,15 +4,20 @@
 
       <!-- ── Sticky left sidebar ──────────────────────────────────────── -->
       <aside class="hidden lg:flex flex-col w-52 flex-shrink-0">
-        <div class="lg:sticky lg:top-[4.5rem] self-start space-y-1">
+        <div class="sticky-aside scroll-thin w-full space-y-1 pr-1">
           <div class="mb-4 px-3">
             <p class="text-overline text-brand">Internal</p>
             <p class="text-sm font-semibold text-fg mt-0.5">Design System</p>
             <p class="text-xs text-subtle mt-0.5">Vue 3 + Tailwind CSS</p>
           </div>
 
-          <div v-for="group in navGroups" :key="group.label" class="mb-3">
-            <p class="text-xs text-subtle uppercase tracking-widest font-semibold px-3 mb-1">{{ group.label }}</p>
+          <!-- Groups: divider + breathing room between each section -->
+          <div
+            v-for="(group, gi) in navGroups"
+            :key="group.label"
+            :class="gi > 0 && 'mt-4 pt-4 border-t border-line'"
+          >
+            <p class="text-[11px] font-extrabold uppercase tracking-[0.1em] text-fg-muted px-3 mb-2">{{ group.label }}</p>
             <router-link
               v-for="item in group.items"
               :key="item.slug"
@@ -24,7 +29,7 @@
             >{{ item.label }}</router-link>
           </div>
 
-          <div class="px-3 pt-3 mt-2 border-t border-line">
+          <div class="px-3 pt-4 mt-4 border-t border-line">
             <router-link to="/ds" class="text-xs text-subtle hover:text-brand transition-colors">← All components</router-link>
           </div>
         </div>
@@ -127,6 +132,7 @@ import {
   BriefcaseIcon, BeakerIcon, MegaphoneIcon, CheckCircleIcon, XCircleIcon,
 } from '@heroicons/vue/24/outline'
 import AppLayout from '@/components/layout/AppLayout.vue'
+import { iconsDoc } from './ds/iconsDoc'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppAvatar from '@/components/ui/AppAvatar.vue'
@@ -170,6 +176,7 @@ const navGroups = [
       { slug: 'colors',     label: 'Color Tokens' },
       { slug: 'typography', label: 'Typography'   },
       { slug: 'spacing',    label: 'Spacing Scale' },
+      { slug: 'icons',      label: 'Iconography' },
     ],
   },
   {
@@ -266,6 +273,7 @@ function removeTag(tag) {
 
 // ── Component data ────────────────────────────────────────────────────────
 const componentData = {
+  icons: iconsDoc,
 
   // ── Button ──────────────────────────────────────────────────────────────
   button: {

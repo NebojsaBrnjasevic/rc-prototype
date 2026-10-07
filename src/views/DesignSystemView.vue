@@ -41,7 +41,7 @@
 
         <!-- Quick stats -->
         <div class="flex gap-4 mb-8 text-xs text-subtle">
-          <span>30 components · 3 foundations</span>
+          <span>30 components · 4 foundations</span>
           <span>·</span>
           <span>Dark / Light mode</span>
           <span>·</span>
@@ -92,6 +92,7 @@ const navGroups = [
       { slug: 'colors',     label: 'Color Tokens', description: 'Theme-aware semantic tokens — surfaces, text, brand, reward, podium', icon: '◐', color: '#3BB3E5' },
       { slug: 'typography', label: 'Typography',   description: 'Unbounded · Manrope · JetBrains Mono — display, UI, time',  icon: 'Aa',  color: '#A78BFA' },
       { slug: 'spacing',    label: 'Spacing Scale', description: '4px base grid — key stops used across components',                   icon: '▦',  color: '#10B981' },
+      { slug: 'icons',      label: 'Iconography',   description: 'Heroicons 24 outline — variants, sizes, colour, catalog of meanings',  icon: '✦',  color: '#F5B623' },
     ],
   },
   {
